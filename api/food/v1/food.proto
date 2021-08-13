@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "google/protobuf/wrappers.proto";
+import "third_party/google/api/annotations.proto";
+
+option go_package = "github.com/Casper-Mars/cloud-restaurant/api/admin/v1;v1";
+
+message AddFoodReq {
+    string name = 1;
+    uint32 price = 2;
+}
+
+message UpdateFoodReq {
+    uint64 id = 1;
+    string name = 2;
+    uint32 price = 3;
+
+}
+
+message FoodModifyResp {
+    uint64 id = 1;
+}
+
+
+message OnePageFoodListReq {
+    google.protobuf.UInt32Value page_index = 1;
+    google.protobuf.UInt32Value page_size = 2;
+    string name = 3;
+}
+
+message FoodListResp {
+    message FoodItem {
+        uint64 id = 1;
+        string name = 2;
+        uint32 price = 3;
+    }
+    repeated FoodItem items = 1;
+}
+
+service Food {
+
+    rpc Add(AddFoodReq) returns (FoodModifyResp) {
+        option (google.api.http) = {
+            post: "/food",
+            body: "*"
+        };
+    }
+
+    rpc Update(UpdateFoodReq) returns (FoodModifyResp) {
+        option (google.api.http) = {
+            put: "/food",
+            body: "*"
+        };
+    }
+
+    rpc Page(OnePageFoodListReq) returns (FoodListResp) {
+        option (google.api.http) = {
+            get: "/food/page"
+        };
+    }
+
+}
+
+
+
+
+
+
+
+
+
