@@ -4,7 +4,7 @@ package interface.v1;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
-import "third_party/google/api/annotations.proto";
+import "google/api/annotations.proto";
 
 option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1";
 
@@ -20,6 +20,7 @@ service User {
     rpc Logout(google.protobuf.Empty) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             post: "/logout"
+            body: "*"
         };
     }
 
