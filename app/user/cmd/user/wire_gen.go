@@ -6,13 +6,13 @@
 package main
 
 import (
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/server"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"user/internal/biz"
-	"user/internal/conf"
-	"user/internal/data"
-	"user/internal/server"
-	"user/internal/service"
 )
 
 // Injectors from wire.go:
@@ -23,12 +23,11 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	greeterRepo := data.NewGreeterRepo(dataData, logger)
-	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
-	greeterService := service.NewGreeterService(greeterUsecase, logger)
-	httpServer := server.NewHTTPServer(confServer, greeterService, logger)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
-	app := newApp(logger, httpServer, grpcServer)
+	userRepo := data.NewUserRepo(dataData, logger)
+	userUsecase := biz.NewUserUsecase(userRepo, logger)
+	userService := service.NewUserService(userUsecase, logger)
+	grpcServer := server.NewGRPCServer(confServer, logger, userService)
+	app := newApp(logger, grpcServer)
 	return app, func() {
 		cleanup()
 	}, nil

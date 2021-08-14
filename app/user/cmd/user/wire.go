@@ -5,14 +5,14 @@
 package main
 
 import (
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/server"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
-	"user/internal/biz"
-	"user/internal/conf"
-	"user/internal/data"
-	"user/internal/server"
-	"user/internal/service"
 )
 
 // initApp init kratos application.

@@ -1,0 +1,26 @@
+package service
+
+import (
+	context "context"
+	"github.com/Casper-Mars/cloud-restaurant/api/user/v1"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/biz"
+	"github.com/go-kratos/kratos/v2/log"
+)
+
+type UserService struct {
+	v1.UnimplementedUserServer
+
+	uc  *biz.UserUsecase
+	log *log.Helper
+}
+
+func NewUserService(uc *biz.UserUsecase, logger log.Logger) *UserService {
+	return &UserService{
+		uc:  uc,
+		log: log.NewHelper(logger),
+	}
+}
+
+func (u UserService) ListUer(ctx context.Context, req *v1.OnePageUserReq) (*v1.UserListResp, error) {
+	panic("implement me")
+}
