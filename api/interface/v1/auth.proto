@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package interface.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "third_party/google/api/annotations.proto";
+
+option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1";
+
+
+service User {
+    rpc Login(LoginReq) returns (LoginResp) {
+        option (google.api.http) = {
+            post: "/login"
+            body: "*"
+        };
+    }
+
+    rpc Logout(google.protobuf.Empty) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/logout"
+        };
+    }
+
+    rpc SelfInfo(google.protobuf.Empty) returns (SelfInfoResp) {
+        option (google.api.http) = {
+            get: "/info"
+        };
+    }
+
+}
+
+message RegistryReq {
+    google.protobuf.StringValue phone = 1;
+    google.protobuf.StringValue password = 2;
+}
+
+message LoginReq {
+    google.protobuf.StringValue phone = 1;
+    google.protobuf.StringValue password = 2;
+}
+
+message LoginResp {
+    string token = 1;
+}
+
+message SelfInfoResp {
+    string phone = 1;
+    string name = 2;
+    string avatar = 3;
+}

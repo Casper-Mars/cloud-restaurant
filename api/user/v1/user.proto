@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "google/protobuf/wrappers.proto";
+import "third_party/google/api/annotations.proto";
+
+option go_package = "github.com/Casper-Mars/cloud-restaurant/api/user/v1;v1";
+
+
+service User {
+    rpc ListUer(OnePageUserReq) returns (UserListResp) {
+        option (google.api.http) = {
+            get: "/user/page"
+        };
+    }
+}
+
+
+message OnePageUserReq {
+    google.protobuf.UInt32Value page_index = 1;
+    google.protobuf.UInt32Value page_size = 2;
+    google.protobuf.StringValue phone = 3;
+    google.protobuf.StringValue name = 4;
+}
+
+message UserListResp {
+    message UserListItem {
+        string phone = 1;
+        string name = 2;
+    }
+}
+

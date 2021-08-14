@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package admin.v1;
+package food.v1;
 
 import "google/protobuf/wrappers.proto";
 import "third_party/google/api/annotations.proto";
 
-option go_package = "github.com/Casper-Mars/cloud-restaurant/api/admin/v1;v1";
+option go_package = "github.com/Casper-Mars/cloud-restaurant/api/food/v1;v1";
 
 message AddFoodReq {
     string name = 1;
