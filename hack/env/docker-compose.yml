@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  pgx:
+    image: "postgres:alpine3.14"
+    environment:
+      - POSTGRES_DB=dev
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    ports:
+      - "5432:5432"
+
