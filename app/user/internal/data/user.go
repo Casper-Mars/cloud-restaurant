@@ -19,13 +19,40 @@ func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 }
 
 func (u userRepo) AddUser(ctx context.Context, user *biz.User) error {
-	panic("implement me")
+	newUser, err := u.data.client.User.Create().
+		SetName(user.Name).
+		SetPhone(user.Phone).
+		SetPwd(user.Password).
+		Save(ctx)
+	if err != nil {
+		return err
+	}
+	user.Id = newUser.ID
+	return nil
 }
 
 func (u userRepo) UpdateUser(ctx context.Context, user *biz.User) error {
-	panic("implement me")
+	_, err := u.data.client.User.UpdateOneID(user.Id).
+		SetPhone(user.Phone).
+		SetName(user.Name).
+		SetPwd(user.Password).
+		Save(ctx)
+	return err
 }
 
 func (u userRepo) List(ctx context.Context) ([]biz.User, error) {
-	panic("implement me")
+	all, err := u.data.client.User.Query().All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	result := make([]biz.User, len(all))
+	for i, item := range all {
+		result[i] = biz.User{
+			Id:       item.ID,
+			Name:     item.Name,
+			Phone:    item.Phone,
+			Password: item.Pwd,
+		}
+	}
+	return result, nil
 }

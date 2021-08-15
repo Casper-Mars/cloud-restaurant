@@ -6,10 +6,10 @@ import (
 )
 
 type User struct {
-	id       uint64
-	name     string
-	phone    string
-	password string
+	Id       uint64
+	Name     string
+	Phone    string
+	Password string
 }
 
 type UserRepo interface {

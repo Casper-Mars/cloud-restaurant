@@ -2,8 +2,8 @@ package data
 
 import (
 	"context"
-	"entgo.io/ent/examples/fs/ent"
 	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	_ "github.com/lib/pq"
