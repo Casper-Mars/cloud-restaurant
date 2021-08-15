@@ -6,11 +6,11 @@
 package main
 
 import (
-	"food/internal/biz"
-	"food/internal/conf"
-	"food/internal/data"
-	"food/internal/server"
-	"food/internal/service"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/server"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -23,12 +23,11 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	greeterRepo := data.NewGreeterRepo(dataData, logger)
-	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
-	greeterService := service.NewGreeterService(greeterUsecase, logger)
-	httpServer := server.NewHTTPServer(confServer, greeterService, logger)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
-	app := newApp(logger, httpServer, grpcServer)
+	foodRepo := data.NewFoodRepo(dataData, logger)
+	foodUsecase := biz.NewFoodUsecase(foodRepo, logger)
+	foodService := service.NewFoodService(foodUsecase, logger)
+	grpcServer := server.NewGRPCServer(confServer, logger, foodService)
+	app := newApp(logger, grpcServer)
 	return app, func() {
 		cleanup()
 	}, nil

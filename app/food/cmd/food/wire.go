@@ -5,11 +5,11 @@
 package main
 
 import (
-	"food/internal/biz"
-	"food/internal/conf"
-	"food/internal/data"
-	"food/internal/server"
-	"food/internal/service"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/server"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
