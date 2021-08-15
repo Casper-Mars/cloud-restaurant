@@ -2,14 +2,14 @@ syntax = "proto3";
 
 package interface.v1;
 
+import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
-import "google/api/annotations.proto";
 
 option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1";
 
 
-service User {
+service Auth {
     rpc Login(LoginReq) returns (LoginResp) {
         option (google.api.http) = {
             post: "/login"

@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "User"
+      "name": "Auth"
     }
   ],
   "consumes": [
@@ -18,7 +18,7 @@
   "paths": {
     "/info": {
       "get": {
-        "operationId": "User_SelfInfo",
+        "operationId": "Auth_SelfInfo",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -34,13 +34,13 @@
           }
         },
         "tags": [
-          "User"
+          "Auth"
         ]
       }
     },
     "/login": {
       "post": {
-        "operationId": "User_Login",
+        "operationId": "Auth_Login",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -66,13 +66,13 @@
           }
         ],
         "tags": [
-          "User"
+          "Auth"
         ]
       }
     },
     "/logout": {
       "post": {
-        "operationId": "User_Logout",
+        "operationId": "Auth_Logout",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -87,8 +87,18 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "properties": {}
+            }
+          }
+        ],
         "tags": [
-          "User"
+          "Auth"
         ]
       }
     }

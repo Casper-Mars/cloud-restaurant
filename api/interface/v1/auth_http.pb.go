@@ -18,26 +18,26 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-type UserHTTPServer interface {
+type AuthHTTPServer interface {
 	Login(context.Context, *LoginReq) (*LoginResp, error)
 	Logout(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	SelfInfo(context.Context, *emptypb.Empty) (*SelfInfoResp, error)
 }
 
-func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
+func RegisterAuthHTTPServer(s *http.Server, srv AuthHTTPServer) {
 	r := s.Route("/")
-	r.POST("/login", _User_Login0_HTTP_Handler(srv))
-	r.POST("/logout", _User_Logout0_HTTP_Handler(srv))
-	r.GET("/info", _User_SelfInfo0_HTTP_Handler(srv))
+	r.POST("/login", _Auth_Login0_HTTP_Handler(srv))
+	r.POST("/logout", _Auth_Logout0_HTTP_Handler(srv))
+	r.GET("/info", _Auth_SelfInfo0_HTTP_Handler(srv))
 }
 
-func _User_Login0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _Auth_Login0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in LoginReq
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/interface.v1.User/Login")
+		http.SetOperation(ctx, "/interface.v1.Auth/Login")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.Login(ctx, req.(*LoginReq))
 		})
@@ -50,13 +50,13 @@ func _User_Login0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error 
 	}
 }
 
-func _User_Logout0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _Auth_Logout0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
-		if err := ctx.BindQuery(&in); err != nil {
+		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/interface.v1.User/Logout")
+		http.SetOperation(ctx, "/interface.v1.Auth/Logout")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.Logout(ctx, req.(*emptypb.Empty))
 		})
@@ -69,13 +69,13 @@ func _User_Logout0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error
 	}
 }
 
-func _User_SelfInfo0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _Auth_SelfInfo0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/interface.v1.User/SelfInfo")
+		http.SetOperation(ctx, "/interface.v1.Auth/SelfInfo")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.SelfInfo(ctx, req.(*emptypb.Empty))
 		})
@@ -88,25 +88,25 @@ func _User_SelfInfo0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) err
 	}
 }
 
-type UserHTTPClient interface {
+type AuthHTTPClient interface {
 	Login(ctx context.Context, req *LoginReq, opts ...http.CallOption) (rsp *LoginResp, err error)
 	Logout(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	SelfInfo(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *SelfInfoResp, err error)
 }
 
-type UserHTTPClientImpl struct {
+type AuthHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewUserHTTPClient(client *http.Client) UserHTTPClient {
-	return &UserHTTPClientImpl{client}
+func NewAuthHTTPClient(client *http.Client) AuthHTTPClient {
+	return &AuthHTTPClientImpl{client}
 }
 
-func (c *UserHTTPClientImpl) Login(ctx context.Context, in *LoginReq, opts ...http.CallOption) (*LoginResp, error) {
+func (c *AuthHTTPClientImpl) Login(ctx context.Context, in *LoginReq, opts ...http.CallOption) (*LoginResp, error) {
 	var out LoginResp
 	pattern := "/login"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/interface.v1.User/Login"))
+	opts = append(opts, http.Operation("/interface.v1.Auth/Login"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -115,24 +115,24 @@ func (c *UserHTTPClientImpl) Login(ctx context.Context, in *LoginReq, opts ...ht
 	return &out, err
 }
 
-func (c *UserHTTPClientImpl) Logout(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*emptypb.Empty, error) {
+func (c *AuthHTTPClientImpl) Logout(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
 	pattern := "/logout"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/interface.v1.User/Logout"))
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/interface.v1.Auth/Logout"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return &out, err
 }
 
-func (c *UserHTTPClientImpl) SelfInfo(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*SelfInfoResp, error) {
+func (c *AuthHTTPClientImpl) SelfInfo(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*SelfInfoResp, error) {
 	var out SelfInfoResp
 	pattern := "/info"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/interface.v1.User/SelfInfo"))
+	opts = append(opts, http.Operation("/interface.v1.Auth/SelfInfo"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
