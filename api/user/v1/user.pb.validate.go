@@ -33,6 +33,145 @@ var (
 	_ = anypb.Any{}
 )
 
+// Validate checks the field values on AddUserReq with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *AddUserReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Phone
+
+	// no validation rules for Name
+
+	// no validation rules for Avatar
+
+	// no validation rules for Password
+
+	return nil
+}
+
+// AddUserReqValidationError is the validation error returned by
+// AddUserReq.Validate if the designated constraints aren't met.
+type AddUserReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AddUserReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AddUserReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AddUserReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AddUserReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AddUserReqValidationError) ErrorName() string { return "AddUserReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AddUserReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAddUserReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AddUserReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AddUserReqValidationError{}
+
+// Validate checks the field values on UserModifyResp with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *UserModifyResp) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	return nil
+}
+
+// UserModifyRespValidationError is the validation error returned by
+// UserModifyResp.Validate if the designated constraints aren't met.
+type UserModifyRespValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UserModifyRespValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UserModifyRespValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UserModifyRespValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UserModifyRespValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UserModifyRespValidationError) ErrorName() string { return "UserModifyRespValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UserModifyRespValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUserModifyResp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UserModifyRespValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UserModifyRespValidationError{}
+
 // Validate checks the field values on OnePageUserReq with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.

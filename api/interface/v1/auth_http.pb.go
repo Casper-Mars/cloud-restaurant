@@ -21,14 +21,35 @@ const _ = http.SupportPackageIsVersion1
 type AuthHTTPServer interface {
 	Login(context.Context, *LoginReq) (*LoginResp, error)
 	Logout(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
+	Registry(context.Context, *RegistryReq) (*emptypb.Empty, error)
 	SelfInfo(context.Context, *emptypb.Empty) (*SelfInfoResp, error)
 }
 
 func RegisterAuthHTTPServer(s *http.Server, srv AuthHTTPServer) {
 	r := s.Route("/")
+	r.POST("/registry", _Auth_Registry0_HTTP_Handler(srv))
 	r.POST("/login", _Auth_Login0_HTTP_Handler(srv))
 	r.POST("/logout", _Auth_Logout0_HTTP_Handler(srv))
 	r.GET("/info", _Auth_SelfInfo0_HTTP_Handler(srv))
+}
+
+func _Auth_Registry0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in RegistryReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/interface.v1.Auth/Registry")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Registry(ctx, req.(*RegistryReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
 }
 
 func _Auth_Login0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
@@ -91,6 +112,7 @@ func _Auth_SelfInfo0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) err
 type AuthHTTPClient interface {
 	Login(ctx context.Context, req *LoginReq, opts ...http.CallOption) (rsp *LoginResp, err error)
 	Logout(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	Registry(ctx context.Context, req *RegistryReq, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	SelfInfo(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *SelfInfoResp, err error)
 }
 
@@ -120,6 +142,19 @@ func (c *AuthHTTPClientImpl) Logout(ctx context.Context, in *emptypb.Empty, opts
 	pattern := "/logout"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/interface.v1.Auth/Logout"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AuthHTTPClientImpl) Registry(ctx context.Context, in *RegistryReq, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/registry"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/interface.v1.Auth/Registry"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

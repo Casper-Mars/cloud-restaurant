@@ -10,6 +10,12 @@ option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1
 
 
 service Auth {
+    rpc Registry(RegistryReq) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/registry"
+            body: "*"
+        };
+    }
     rpc Login(LoginReq) returns (LoginResp) {
         option (google.api.http) = {
             post: "/login"
