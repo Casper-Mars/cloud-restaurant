@@ -24,3 +24,18 @@ func NewUserService(uc *biz.UserUsecase, logger log.Logger) *UserService {
 func (u UserService) ListUer(ctx context.Context, req *v1.OnePageUserReq) (*v1.UserListResp, error) {
 	panic("implement me")
 }
+
+func (u UserService) AddUser(ctx context.Context, req *v1.AddUserReq) (*v1.UserModifyResp, error) {
+	user := &biz.User{
+		Password: req.Password,
+		Name:     req.Name,
+		Phone:    req.Phone,
+	}
+	err := u.uc.AddUser(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.UserModifyResp{
+		Id: user.Id,
+	}, nil
+}

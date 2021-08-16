@@ -23,13 +23,34 @@ func NewAuthService(uc *biz.AuthUsecase, logger log.Logger) *AuthService {
 }
 
 func (a AuthService) Login(ctx context.Context, req *v1.LoginReq) (*v1.LoginResp, error) {
-	panic("implement me")
+	login, err := a.uc.Login(ctx, req.Phone.String(), req.Password.String())
+	if err != nil {
+		return nil, err
+	}
+	return &v1.LoginResp{
+		Token: login,
+	}, nil
 }
 
 func (a AuthService) Logout(ctx context.Context, empty *emptypb.Empty) (*emptypb.Empty, error) {
-	panic("implement me")
+	return &emptypb.Empty{}, nil
 }
 
 func (a AuthService) SelfInfo(ctx context.Context, empty *emptypb.Empty) (*v1.SelfInfoResp, error) {
-	panic("implement me")
+	info, err := a.uc.SelfInfo(ctx, "")
+	if err != nil {
+		return nil, err
+	}
+	return &v1.SelfInfoResp{
+		Phone: info.Phone,
+		Name:  info.Name,
+	}, nil
+}
+
+func (a AuthService) Registry(ctx context.Context, req *v1.RegistryReq) (*emptypb.Empty, error) {
+	err := a.uc.Registry(ctx, &biz.AuthDO{
+		Phone: req.Phone.String(),
+		Pwd:   req.Password.String(),
+	})
+	return &emptypb.Empty{}, err
 }
