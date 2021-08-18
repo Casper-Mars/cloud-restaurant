@@ -2,6 +2,7 @@ GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
 INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
 API_PROTO_FILES=$(shell find api -name *.proto)
+IMAGE_NAME=registry.cn-hangzhou.aliyuncs.com/cloud_restaurant/food
 
 .PHONY: init
 # init env
@@ -76,4 +77,5 @@ help:
 
 .PHONY: package
 package:
-	docker build -t myapp/food .
+	docker build -t ${IMAGE_NAME} .
+	docker push ${IMAGE_NAME}
