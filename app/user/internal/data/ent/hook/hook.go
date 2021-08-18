@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent"
+	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent"
 )
 
 // The UserFunc type is an adapter to allow the use of ordinary

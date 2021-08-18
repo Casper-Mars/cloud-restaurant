@@ -5,8 +5,8 @@ package ent
 import (
 	"time"
 
-	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/schema"
-	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/user"
+	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/schema"
+	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code

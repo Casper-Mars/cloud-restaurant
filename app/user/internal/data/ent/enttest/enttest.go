@@ -5,9 +5,9 @@ package enttest
 import (
 	"context"
 
-	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent"
+	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent"
 	// required by schema hooks.
-	_ "github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/runtime"
+	_ "github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
 )

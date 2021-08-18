@@ -3,7 +3,7 @@ package service
 import (
 	context "context"
 	"github.com/Casper-Mars/cloud-restaurant/api/user/v1"
-	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/user/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
 )
 

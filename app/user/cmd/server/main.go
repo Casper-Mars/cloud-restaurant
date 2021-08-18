@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/user/internal/conf"
 	"os"
 
 	"github.com/go-kratos/kratos/v2"

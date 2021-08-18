@@ -10,7 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/user"
+	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/user"
 )
 
 // UserCreate is the builder for creating a User entity.
