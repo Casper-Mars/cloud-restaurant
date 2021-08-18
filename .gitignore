@@ -34,3 +34,6 @@ bin/
 .vscode/
 .idea/
 *.swp
+
+# chart package
+*.tgz
