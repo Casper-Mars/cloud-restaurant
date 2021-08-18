@@ -2,9 +2,11 @@ package service
 
 import (
 	context "context"
+	"fmt"
 	"github.com/Casper-Mars/cloud-restaurant/api/user/v1"
 	"github.com/Casper-Mars/cloud-restaurant/user/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type UserService struct {
@@ -38,4 +40,9 @@ func (u UserService) AddUser(ctx context.Context, req *v1.AddUserReq) (*v1.UserM
 	return &v1.UserModifyResp{
 		Id: user.Id,
 	}, nil
+}
+
+func (u UserService) Heath(ctx context.Context, in *emptypb.Empty) (*emptypb.Empty, error) {
+	fmt.Println("get a call")
+	return &emptypb.Empty{}, nil
 }

@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: registry.cn-hangzhou.aliyuncs.com/cloud_restaurant/interface
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
@@ -37,7 +37,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 80
 
 ingress:

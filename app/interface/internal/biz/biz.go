@@ -13,7 +13,7 @@ var ProviderSet = wire.NewSet(NewAuthUsecase, NewUserClient, NewHealthUsecase)
 func NewUserClient() v1.UserClient {
 	con, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("dns:///user.default.svc.cluster.local"),
+		grpc.WithEndpoint("dns:///user.default.svc.cluster.local:9000"),
 	)
 	if err != nil {
 		panic(err)
