@@ -2,12 +2,17 @@ syntax = "proto3";
 
 package interface.v1;
 
+import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1";
 
 service Health {
 
-    rpc TestUser(google.protobuf.Empty) returns (google.protobuf.Empty);
+    rpc TestUser(google.protobuf.Empty) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            get: "/health"
+        };
+    };
 
 }

@@ -15,7 +15,30 @@
   "produces": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "Health_TestUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    }
+  },
   "definitions": {
     "protobufAny": {
       "type": "object",
