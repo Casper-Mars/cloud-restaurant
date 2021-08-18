@@ -77,5 +77,6 @@ help:
 
 .PHONY: package
 package:
+	make build
 	docker build -t ${IMAGE_NAME} .
 	docker push ${IMAGE_NAME}
