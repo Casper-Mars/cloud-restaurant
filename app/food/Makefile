@@ -74,10 +74,6 @@ help:
 
 .DEFAULT_GOAL := help
 
-
-
-
 .PHONY: package
 package:
-	make build
 	docker build -t myapp/food .

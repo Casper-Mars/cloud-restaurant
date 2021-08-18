@@ -2,8 +2,8 @@ package server
 
 import (
 	v1 "github.com/Casper-Mars/cloud-restaurant/api/food/v1"
-	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/conf"
-	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/service"
+	"github.com/Casper-Mars/cloud-restaurant/food/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/food/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"

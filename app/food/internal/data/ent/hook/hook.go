@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data/ent"
+	"github.com/Casper-Mars/cloud-restaurant/food/internal/data/ent"
 )
 
 // The FoodFunc type is an adapter to allow the use of ordinary

@@ -10,7 +10,7 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data/ent/food"
+	"github.com/Casper-Mars/cloud-restaurant/food/internal/data/ent/food"
 )
 
 // ent aliases to avoid import conflicts in user's code.

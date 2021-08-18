@@ -10,7 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data/ent/food"
+	"github.com/Casper-Mars/cloud-restaurant/food/internal/data/ent/food"
 )
 
 // FoodCreate is the builder for creating a Food entity.

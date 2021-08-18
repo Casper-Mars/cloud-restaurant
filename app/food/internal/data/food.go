@@ -1,7 +1,7 @@
 package data
 
 import (
-	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/food/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
 )
 

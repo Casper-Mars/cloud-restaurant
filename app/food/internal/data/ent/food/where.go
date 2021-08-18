@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data/ent/predicate"
+	"github.com/Casper-Mars/cloud-restaurant/food/internal/data/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.
