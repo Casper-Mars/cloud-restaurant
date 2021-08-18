@@ -8,7 +8,7 @@ server:
 data:
   database:
     driver: postgres
-    source: postgres://root:root@localhost:5432/dev?sslmode=disable
+    source: postgres://user_01:Abcd123456@pgm-wz9rmi446k4v4tje4o.pg.rds.aliyuncs.com:1921/dev?sslmode=disable
   redis:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
