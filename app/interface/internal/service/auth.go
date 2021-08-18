@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"github.com/Casper-Mars/cloud-restaurant/api/interface/v1"
-	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/interface/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
