@@ -19,5 +19,9 @@ func NewHealthService(hc *biz.HealthUsecase) *HealthService {
 }
 
 func (h HealthService) TestUser(ctx context.Context, empty *emptypb.Empty) (*emptypb.Empty, error) {
-	panic("implement me")
+	err := h.hc.TestUser()
+	if err != nil {
+		panic(err)
+	}
+	return &emptypb.Empty{}, nil
 }
