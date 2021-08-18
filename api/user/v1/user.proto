@@ -2,13 +2,14 @@ syntax = "proto3";
 
 package user.v1;
 
+import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
 option go_package = "github.com/Casper-Mars/cloud-restaurant/api/user/v1;v1";
 
 
 service User {
-
+    rpc Heath(google.protobuf.Empty) returns (google.protobuf.Empty);
     rpc ListUer(OnePageUserReq) returns (UserListResp);
     rpc AddUser(AddUserReq) returns (UserModifyResp);
 }
