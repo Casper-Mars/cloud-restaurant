@@ -21,7 +21,9 @@ func initApp(confServer *conf.Server, data *conf.Data, logger log.Logger) (*krat
 	userClient := biz.NewUserClient()
 	authUsecase := biz.NewAuthUsecase(logger, userClient)
 	authService := service.NewAuthService(authUsecase, logger)
-	httpServer := server.NewHTTPServer(confServer, logger, authService)
+	healthUsecase := biz.NewHealthUsecase(userClient)
+	healthService := service.NewHealthService(healthUsecase)
+	httpServer := server.NewHTTPServer(confServer, logger, authService, healthService)
 	grpcServer := server.NewGRPCServer(confServer, authService, logger)
 	app := newApp(logger, httpServer, grpcServer)
 	return app, func() {

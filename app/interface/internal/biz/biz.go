@@ -8,10 +8,9 @@ import (
 )
 
 // ProviderSet is biz providers.
-var ProviderSet = wire.NewSet(NewAuthUsecase, NewUserClient)
+var ProviderSet = wire.NewSet(NewAuthUsecase, NewUserClient, NewHealthUsecase)
 
 func NewUserClient() v1.UserClient {
-
 	con, err := grpc.DialInsecure(
 		context.Background(),
 		grpc.WithEndpoint("dns:///user.default.svc.cluster.local"),
@@ -21,13 +20,3 @@ func NewUserClient() v1.UserClient {
 	}
 	return v1.NewUserClient(con)
 }
-
-//func NewDiscovery() registry.Discovery {
-//
-//	cli, err := consulAPI.NewClient(consulAPI.DefaultConfig())
-//	if err != nil {
-//		panic(err)
-//	}
-//	r := consul.New(cli)
-//	return r
-//}
