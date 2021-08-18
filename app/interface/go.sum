@@ -14,8 +14,8 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 entgo.io/ent v0.9.0/go.mod h1:6NUeTfUN5mp5YN+5tgoH1SlakSvYPTBOYotSOvaI4ak=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/Casper-Mars/cloud-restaurant v0.0.0-20210818073626-563fc6e4cc25 h1:C7FlOFTizqpMygd2wWmngUXLwPmUOBqVvdCfWUSJY2w=
-github.com/Casper-Mars/cloud-restaurant v0.0.0-20210818073626-563fc6e4cc25/go.mod h1:nNacvqw9w3dAxGFO1cuYuaygZMrcNxiIZxLASZtmV48=
+github.com/Casper-Mars/cloud-restaurant v0.0.0-20210818100744-c2d2006708db h1:Lf9+U/uAiQMmRpwAE/R3cztb/eCzhL6JRCP/eBrBqSg=
+github.com/Casper-Mars/cloud-restaurant v0.0.0-20210818100744-c2d2006708db/go.mod h1:cTUZSSKY+NXOaaj0mPfQghXZc9lBhn8t6Rp7IY7LC4k=
 github.com/DATA-DOG/go-sqlmock v1.5.0/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
