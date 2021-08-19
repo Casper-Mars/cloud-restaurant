@@ -161,7 +161,7 @@ func (c *FoodClient) UpdateOne(f *Food) *FoodUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *FoodClient) UpdateOneID(id uint64) *FoodUpdateOne {
+func (c *FoodClient) UpdateOneID(id int) *FoodUpdateOne {
 	mutation := newFoodMutation(c.config, OpUpdateOne, withFoodID(id))
 	return &FoodUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -178,7 +178,7 @@ func (c *FoodClient) DeleteOne(f *Food) *FoodDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *FoodClient) DeleteOneID(id uint64) *FoodDeleteOne {
+func (c *FoodClient) DeleteOneID(id int) *FoodDeleteOne {
 	builder := c.Delete().Where(food.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -193,12 +193,12 @@ func (c *FoodClient) Query() *FoodQuery {
 }
 
 // Get returns a Food entity by its id.
-func (c *FoodClient) Get(ctx context.Context, id uint64) (*Food, error) {
+func (c *FoodClient) Get(ctx context.Context, id int) (*Food, error) {
 	return c.Query().Where(food.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *FoodClient) GetX(ctx context.Context, id uint64) *Food {
+func (c *FoodClient) GetX(ctx context.Context, id int) *Food {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

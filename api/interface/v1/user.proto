@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package interface.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1";
+
+
+service User {
+    rpc List(UserListReq) returns (UserList) {
+        option (google.api.http) = {
+            get: "/user/list"
+        };
+    }
+}
+
+
+message UserListReq {
+
+}
+
+message UserList {
+    message UserListItem {
+
+    }
+    repeated UserListItem items = 1;
+}

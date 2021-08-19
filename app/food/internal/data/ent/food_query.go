@@ -84,8 +84,8 @@ func (fq *FoodQuery) FirstX(ctx context.Context) *Food {
 
 // FirstID returns the first Food ID from the query.
 // Returns a *NotFoundError when no Food ID was found.
-func (fq *FoodQuery) FirstID(ctx context.Context) (id uint64, err error) {
-	var ids []uint64
+func (fq *FoodQuery) FirstID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = fq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +97,7 @@ func (fq *FoodQuery) FirstID(ctx context.Context) (id uint64, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (fq *FoodQuery) FirstIDX(ctx context.Context) uint64 {
+func (fq *FoodQuery) FirstIDX(ctx context.Context) int {
 	id, err := fq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +135,8 @@ func (fq *FoodQuery) OnlyX(ctx context.Context) *Food {
 // OnlyID is like Only, but returns the only Food ID in the query.
 // Returns a *NotSingularError when exactly one Food ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (fq *FoodQuery) OnlyID(ctx context.Context) (id uint64, err error) {
-	var ids []uint64
+func (fq *FoodQuery) OnlyID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = fq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +152,7 @@ func (fq *FoodQuery) OnlyID(ctx context.Context) (id uint64, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (fq *FoodQuery) OnlyIDX(ctx context.Context) uint64 {
+func (fq *FoodQuery) OnlyIDX(ctx context.Context) int {
 	id, err := fq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +178,8 @@ func (fq *FoodQuery) AllX(ctx context.Context) []*Food {
 }
 
 // IDs executes the query and returns a list of Food IDs.
-func (fq *FoodQuery) IDs(ctx context.Context) ([]uint64, error) {
-	var ids []uint64
+func (fq *FoodQuery) IDs(ctx context.Context) ([]int, error) {
+	var ids []int
 	if err := fq.Select(food.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func (fq *FoodQuery) IDs(ctx context.Context) ([]uint64, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (fq *FoodQuery) IDsX(ctx context.Context) []uint64 {
+func (fq *FoodQuery) IDsX(ctx context.Context) []int {
 	ids, err := fq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -353,7 +353,7 @@ func (fq *FoodQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   food.Table,
 			Columns: food.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUint64,
+				Type:   field.TypeInt,
 				Column: food.FieldID,
 			},
 		},

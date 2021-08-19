@@ -15,13 +15,11 @@ import (
 type Food struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID uint64 `json:"id,omitempty"`
+	ID int `json:"id,omitempty"`
 	// CreateTime holds the value of the "createTime" field.
 	CreateTime time.Time `json:"createTime,omitempty"`
 	// UpdateTime holds the value of the "updateTime" field.
 	UpdateTime time.Time `json:"updateTime,omitempty"`
-	// DeleteFlag holds the value of the "delete_flag" field.
-	DeleteFlag bool `json:"delete_flag,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 }
@@ -31,8 +29,6 @@ func (*Food) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case food.FieldDeleteFlag:
-			values[i] = new(sql.NullBool)
 		case food.FieldID:
 			values[i] = new(sql.NullInt64)
 		case food.FieldName:
@@ -59,7 +55,7 @@ func (f *Food) assignValues(columns []string, values []interface{}) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			f.ID = uint64(value.Int64)
+			f.ID = int(value.Int64)
 		case food.FieldCreateTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field createTime", values[i])
@@ -71,12 +67,6 @@ func (f *Food) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field updateTime", values[i])
 			} else if value.Valid {
 				f.UpdateTime = value.Time
-			}
-		case food.FieldDeleteFlag:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field delete_flag", values[i])
-			} else if value.Valid {
-				f.DeleteFlag = value.Bool
 			}
 		case food.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -116,8 +106,6 @@ func (f *Food) String() string {
 	builder.WriteString(f.CreateTime.Format(time.ANSIC))
 	builder.WriteString(", updateTime=")
 	builder.WriteString(f.UpdateTime.Format(time.ANSIC))
-	builder.WriteString(", delete_flag=")
-	builder.WriteString(fmt.Sprintf("%v", f.DeleteFlag))
 	builder.WriteString(", name=")
 	builder.WriteString(f.Name)
 	builder.WriteByte(')')

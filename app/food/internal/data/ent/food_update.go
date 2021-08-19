@@ -47,20 +47,6 @@ func (fu *FoodUpdate) SetUpdateTime(t time.Time) *FoodUpdate {
 	return fu
 }
 
-// SetDeleteFlag sets the "delete_flag" field.
-func (fu *FoodUpdate) SetDeleteFlag(b bool) *FoodUpdate {
-	fu.mutation.SetDeleteFlag(b)
-	return fu
-}
-
-// SetNillableDeleteFlag sets the "delete_flag" field if the given value is not nil.
-func (fu *FoodUpdate) SetNillableDeleteFlag(b *bool) *FoodUpdate {
-	if b != nil {
-		fu.SetDeleteFlag(*b)
-	}
-	return fu
-}
-
 // SetName sets the "name" field.
 func (fu *FoodUpdate) SetName(s string) *FoodUpdate {
 	fu.mutation.SetName(s)
@@ -138,7 +124,7 @@ func (fu *FoodUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   food.Table,
 			Columns: food.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUint64,
+				Type:   field.TypeInt,
 				Column: food.FieldID,
 			},
 		},
@@ -162,13 +148,6 @@ func (fu *FoodUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: food.FieldUpdateTime,
-		})
-	}
-	if value, ok := fu.mutation.DeleteFlag(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: food.FieldDeleteFlag,
 		})
 	}
 	if value, ok := fu.mutation.Name(); ok {
@@ -214,20 +193,6 @@ func (fuo *FoodUpdateOne) SetNillableCreateTime(t *time.Time) *FoodUpdateOne {
 // SetUpdateTime sets the "updateTime" field.
 func (fuo *FoodUpdateOne) SetUpdateTime(t time.Time) *FoodUpdateOne {
 	fuo.mutation.SetUpdateTime(t)
-	return fuo
-}
-
-// SetDeleteFlag sets the "delete_flag" field.
-func (fuo *FoodUpdateOne) SetDeleteFlag(b bool) *FoodUpdateOne {
-	fuo.mutation.SetDeleteFlag(b)
-	return fuo
-}
-
-// SetNillableDeleteFlag sets the "delete_flag" field if the given value is not nil.
-func (fuo *FoodUpdateOne) SetNillableDeleteFlag(b *bool) *FoodUpdateOne {
-	if b != nil {
-		fuo.SetDeleteFlag(*b)
-	}
 	return fuo
 }
 
@@ -315,7 +280,7 @@ func (fuo *FoodUpdateOne) sqlSave(ctx context.Context) (_node *Food, err error) 
 			Table:   food.Table,
 			Columns: food.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUint64,
+				Type:   field.TypeInt,
 				Column: food.FieldID,
 			},
 		},
@@ -356,13 +321,6 @@ func (fuo *FoodUpdateOne) sqlSave(ctx context.Context) (_node *Food, err error) 
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: food.FieldUpdateTime,
-		})
-	}
-	if value, ok := fuo.mutation.DeleteFlag(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: food.FieldDeleteFlag,
 		})
 	}
 	if value, ok := fuo.mutation.Name(); ok {

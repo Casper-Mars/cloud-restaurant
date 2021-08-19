@@ -69,7 +69,7 @@ func (fd *FoodDelete) sqlExec(ctx context.Context) (int, error) {
 		Node: &sqlgraph.NodeSpec{
 			Table: food.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUint64,
+				Type:   field.TypeInt,
 				Column: food.FieldID,
 			},
 		},

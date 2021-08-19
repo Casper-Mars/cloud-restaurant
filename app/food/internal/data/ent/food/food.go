@@ -15,8 +15,6 @@ const (
 	FieldCreateTime = "create_time"
 	// FieldUpdateTime holds the string denoting the updatetime field in the database.
 	FieldUpdateTime = "update_time"
-	// FieldDeleteFlag holds the string denoting the delete_flag field in the database.
-	FieldDeleteFlag = "delete_flag"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// Table holds the table name of the food in the database.
@@ -28,7 +26,6 @@ var Columns = []string{
 	FieldID,
 	FieldCreateTime,
 	FieldUpdateTime,
-	FieldDeleteFlag,
 	FieldName,
 }
 
@@ -49,6 +46,4 @@ var (
 	DefaultUpdateTime func() time.Time
 	// UpdateDefaultUpdateTime holds the default value on update for the "updateTime" field.
 	UpdateDefaultUpdateTime func() time.Time
-	// DefaultDeleteFlag holds the default value on creation for the "delete_flag" field.
-	DefaultDeleteFlag bool
 )

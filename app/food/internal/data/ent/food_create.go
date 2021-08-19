@@ -48,29 +48,9 @@ func (fc *FoodCreate) SetNillableUpdateTime(t *time.Time) *FoodCreate {
 	return fc
 }
 
-// SetDeleteFlag sets the "delete_flag" field.
-func (fc *FoodCreate) SetDeleteFlag(b bool) *FoodCreate {
-	fc.mutation.SetDeleteFlag(b)
-	return fc
-}
-
-// SetNillableDeleteFlag sets the "delete_flag" field if the given value is not nil.
-func (fc *FoodCreate) SetNillableDeleteFlag(b *bool) *FoodCreate {
-	if b != nil {
-		fc.SetDeleteFlag(*b)
-	}
-	return fc
-}
-
 // SetName sets the "name" field.
 func (fc *FoodCreate) SetName(s string) *FoodCreate {
 	fc.mutation.SetName(s)
-	return fc
-}
-
-// SetID sets the "id" field.
-func (fc *FoodCreate) SetID(u uint64) *FoodCreate {
-	fc.mutation.SetID(u)
 	return fc
 }
 
@@ -134,10 +114,6 @@ func (fc *FoodCreate) defaults() {
 		v := food.DefaultUpdateTime()
 		fc.mutation.SetUpdateTime(v)
 	}
-	if _, ok := fc.mutation.DeleteFlag(); !ok {
-		v := food.DefaultDeleteFlag
-		fc.mutation.SetDeleteFlag(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -147,9 +123,6 @@ func (fc *FoodCreate) check() error {
 	}
 	if _, ok := fc.mutation.UpdateTime(); !ok {
 		return &ValidationError{Name: "updateTime", err: errors.New("ent: missing required field \"updateTime\"")}
-	}
-	if _, ok := fc.mutation.DeleteFlag(); !ok {
-		return &ValidationError{Name: "delete_flag", err: errors.New("ent: missing required field \"delete_flag\"")}
 	}
 	if _, ok := fc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New("ent: missing required field \"name\"")}
@@ -165,10 +138,8 @@ func (fc *FoodCreate) sqlSave(ctx context.Context) (*Food, error) {
 		}
 		return nil, err
 	}
-	if _node.ID == 0 {
-		id := _spec.ID.Value.(int64)
-		_node.ID = uint64(id)
-	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
 	return _node, nil
 }
 
@@ -178,15 +149,11 @@ func (fc *FoodCreate) createSpec() (*Food, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: food.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUint64,
+				Type:   field.TypeInt,
 				Column: food.FieldID,
 			},
 		}
 	)
-	if id, ok := fc.mutation.ID(); ok {
-		_node.ID = id
-		_spec.ID.Value = id
-	}
 	if value, ok := fc.mutation.CreateTime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
@@ -202,14 +169,6 @@ func (fc *FoodCreate) createSpec() (*Food, *sqlgraph.CreateSpec) {
 			Column: food.FieldUpdateTime,
 		})
 		_node.UpdateTime = value
-	}
-	if value, ok := fc.mutation.DeleteFlag(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: food.FieldDeleteFlag,
-		})
-		_node.DeleteFlag = value
 	}
 	if value, ok := fc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -262,10 +221,8 @@ func (fcb *FoodCreateBulk) Save(ctx context.Context) ([]*Food, error) {
 				if err != nil {
 					return nil, err
 				}
-				if nodes[i].ID == 0 {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = uint64(id)
-				}
+				id := specs[i].ID.Value.(int64)
+				nodes[i].ID = int(id)
 				return nodes[i], nil
 			})
 			for i := len(builder.hooks) - 1; i >= 0; i-- {

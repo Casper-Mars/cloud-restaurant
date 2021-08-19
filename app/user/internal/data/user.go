@@ -27,12 +27,12 @@ func (u userRepo) AddUser(ctx context.Context, user *biz.User) error {
 	if err != nil {
 		return err
 	}
-	user.Id = newUser.ID
+	user.Id = uint64(newUser.ID)
 	return nil
 }
 
 func (u userRepo) UpdateUser(ctx context.Context, user *biz.User) error {
-	_, err := u.data.client.User.UpdateOneID(user.Id).
+	_, err := u.data.client.User.UpdateOneID(int(user.Id)).
 		SetPhone(user.Phone).
 		SetName(user.Name).
 		SetPwd(user.Password).
@@ -48,7 +48,7 @@ func (u userRepo) List(ctx context.Context) ([]biz.User, error) {
 	result := make([]biz.User, len(all))
 	for i, item := range all {
 		result[i] = biz.User{
-			Id:       item.ID,
+			Id:       uint64(item.ID),
 			Name:     item.Name,
 			Phone:    item.Phone,
 			Password: item.Pwd,

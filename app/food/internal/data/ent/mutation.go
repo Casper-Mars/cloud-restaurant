@@ -31,10 +31,9 @@ type FoodMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *uint64
+	id            *int
 	createTime    *time.Time
 	updateTime    *time.Time
-	delete_flag   *bool
 	name          *string
 	clearedFields map[string]struct{}
 	done          bool
@@ -62,7 +61,7 @@ func newFoodMutation(c config, op Op, opts ...foodOption) *FoodMutation {
 }
 
 // withFoodID sets the ID field of the mutation.
-func withFoodID(id uint64) foodOption {
+func withFoodID(id int) foodOption {
 	return func(m *FoodMutation) {
 		var (
 			err   error
@@ -112,15 +111,9 @@ func (m FoodMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
-// SetID sets the value of the id field. Note that this
-// operation is only accepted on creation of Food entities.
-func (m *FoodMutation) SetID(id uint64) {
-	m.id = &id
-}
-
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *FoodMutation) ID() (id uint64, exists bool) {
+func (m *FoodMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -199,42 +192,6 @@ func (m *FoodMutation) ResetUpdateTime() {
 	m.updateTime = nil
 }
 
-// SetDeleteFlag sets the "delete_flag" field.
-func (m *FoodMutation) SetDeleteFlag(b bool) {
-	m.delete_flag = &b
-}
-
-// DeleteFlag returns the value of the "delete_flag" field in the mutation.
-func (m *FoodMutation) DeleteFlag() (r bool, exists bool) {
-	v := m.delete_flag
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDeleteFlag returns the old "delete_flag" field's value of the Food entity.
-// If the Food object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *FoodMutation) OldDeleteFlag(ctx context.Context) (v bool, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldDeleteFlag is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldDeleteFlag requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDeleteFlag: %w", err)
-	}
-	return oldValue.DeleteFlag, nil
-}
-
-// ResetDeleteFlag resets all changes to the "delete_flag" field.
-func (m *FoodMutation) ResetDeleteFlag() {
-	m.delete_flag = nil
-}
-
 // SetName sets the "name" field.
 func (m *FoodMutation) SetName(s string) {
 	m.name = &s
@@ -285,15 +242,12 @@ func (m *FoodMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *FoodMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 3)
 	if m.createTime != nil {
 		fields = append(fields, food.FieldCreateTime)
 	}
 	if m.updateTime != nil {
 		fields = append(fields, food.FieldUpdateTime)
-	}
-	if m.delete_flag != nil {
-		fields = append(fields, food.FieldDeleteFlag)
 	}
 	if m.name != nil {
 		fields = append(fields, food.FieldName)
@@ -310,8 +264,6 @@ func (m *FoodMutation) Field(name string) (ent.Value, bool) {
 		return m.CreateTime()
 	case food.FieldUpdateTime:
 		return m.UpdateTime()
-	case food.FieldDeleteFlag:
-		return m.DeleteFlag()
 	case food.FieldName:
 		return m.Name()
 	}
@@ -327,8 +279,6 @@ func (m *FoodMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldCreateTime(ctx)
 	case food.FieldUpdateTime:
 		return m.OldUpdateTime(ctx)
-	case food.FieldDeleteFlag:
-		return m.OldDeleteFlag(ctx)
 	case food.FieldName:
 		return m.OldName(ctx)
 	}
@@ -353,13 +303,6 @@ func (m *FoodMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUpdateTime(v)
-		return nil
-	case food.FieldDeleteFlag:
-		v, ok := value.(bool)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDeleteFlag(v)
 		return nil
 	case food.FieldName:
 		v, ok := value.(string)
@@ -422,9 +365,6 @@ func (m *FoodMutation) ResetField(name string) error {
 		return nil
 	case food.FieldUpdateTime:
 		m.ResetUpdateTime()
-		return nil
-	case food.FieldDeleteFlag:
-		m.ResetDeleteFlag()
 		return nil
 	case food.FieldName:
 		m.ResetName()
