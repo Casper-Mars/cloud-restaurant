@@ -49,7 +49,7 @@ func setTracerProvider(url string) error {
 		tracesdk.WithBatcher(exp),
 		// Record information about this application in an Resource.
 		tracesdk.WithResource(resource.NewSchemaless(
-			semconv.ServiceNameKey.String(Name),
+			semconv.ServiceNameKey.String("interface"),
 			attribute.String("env", "dev"),
 		)),
 	)
