@@ -21,6 +21,7 @@ type FoodClient interface {
 	Add(ctx context.Context, in *AddFoodReq, opts ...grpc.CallOption) (*FoodModifyResp, error)
 	Update(ctx context.Context, in *UpdateFoodReq, opts ...grpc.CallOption) (*FoodModifyResp, error)
 	Page(ctx context.Context, in *OnePageFoodListReq, opts ...grpc.CallOption) (*FoodListResp, error)
+	ListByIds(ctx context.Context, in *ListFoodByIdReq, opts ...grpc.CallOption) (*FoodListResp, error)
 }
 
 type foodClient struct {
@@ -58,6 +59,15 @@ func (c *foodClient) Page(ctx context.Context, in *OnePageFoodListReq, opts ...g
 	return out, nil
 }
 
+func (c *foodClient) ListByIds(ctx context.Context, in *ListFoodByIdReq, opts ...grpc.CallOption) (*FoodListResp, error) {
+	out := new(FoodListResp)
+	err := c.cc.Invoke(ctx, "/food.v1.Food/ListByIds", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FoodServer is the server API for Food service.
 // All implementations must embed UnimplementedFoodServer
 // for forward compatibility
@@ -65,6 +75,7 @@ type FoodServer interface {
 	Add(context.Context, *AddFoodReq) (*FoodModifyResp, error)
 	Update(context.Context, *UpdateFoodReq) (*FoodModifyResp, error)
 	Page(context.Context, *OnePageFoodListReq) (*FoodListResp, error)
+	ListByIds(context.Context, *ListFoodByIdReq) (*FoodListResp, error)
 	mustEmbedUnimplementedFoodServer()
 }
 
@@ -80,6 +91,9 @@ func (UnimplementedFoodServer) Update(context.Context, *UpdateFoodReq) (*FoodMod
 }
 func (UnimplementedFoodServer) Page(context.Context, *OnePageFoodListReq) (*FoodListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Page not implemented")
+}
+func (UnimplementedFoodServer) ListByIds(context.Context, *ListFoodByIdReq) (*FoodListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListByIds not implemented")
 }
 func (UnimplementedFoodServer) mustEmbedUnimplementedFoodServer() {}
 
@@ -148,6 +162,24 @@ func _Food_Page_Handler(srv interface{}, ctx context.Context, dec func(interface
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Food_ListByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFoodByIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoodServer).ListByIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/food.v1.Food/ListByIds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoodServer).ListByIds(ctx, req.(*ListFoodByIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Food_ServiceDesc is the grpc.ServiceDesc for Food service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -166,6 +198,10 @@ var Food_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Page",
 			Handler:    _Food_Page_Handler,
+		},
+		{
+			MethodName: "ListByIds",
+			Handler:    _Food_ListByIds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

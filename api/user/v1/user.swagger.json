@@ -57,7 +57,30 @@
       }
     },
     "v1UserListResp": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1UserListRespUserListItem"
+          }
+        }
+      }
+    },
+    "v1UserListRespUserListItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
     }
   }
 }

@@ -3,9 +3,12 @@ syntax = "proto3";
 package food.v1;
 
 import "google/protobuf/wrappers.proto";
-import "google/api/annotations.proto";
 
 option go_package = "github.com/Casper-Mars/cloud-restaurant/api/food/v1;v1";
+
+message ListFoodByIdReq {
+    repeated uint64 id = 1;
+}
 
 message AddFoodReq {
     string name = 1;
@@ -40,27 +43,10 @@ message FoodListResp {
 }
 
 service Food {
-
-    rpc Add(AddFoodReq) returns (FoodModifyResp) {
-        option (google.api.http) = {
-            post: "/food",
-            body: "*"
-        };
-    }
-
-    rpc Update(UpdateFoodReq) returns (FoodModifyResp) {
-        option (google.api.http) = {
-            put: "/food",
-            body: "*"
-        };
-    }
-
-    rpc Page(OnePageFoodListReq) returns (FoodListResp) {
-        option (google.api.http) = {
-            get: "/food/page"
-        };
-    }
-
+    rpc Add(AddFoodReq) returns (FoodModifyResp);
+    rpc Update(UpdateFoodReq) returns (FoodModifyResp);
+    rpc Page(OnePageFoodListReq) returns (FoodListResp);
+    rpc ListByIds(ListFoodByIdReq) returns (FoodListResp);
 }
 
 

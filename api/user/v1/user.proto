@@ -12,6 +12,7 @@ service User {
     rpc Heath(google.protobuf.Empty) returns (google.protobuf.Empty);
     rpc ListUer(OnePageUserReq) returns (UserListResp);
     rpc AddUser(AddUserReq) returns (UserModifyResp);
+    rpc ListUserByIds(ListUserByIdReq) returns (UserListResp);
 }
 
 
@@ -35,8 +36,13 @@ message OnePageUserReq {
 
 message UserListResp {
     message UserListItem {
-        string phone = 1;
-        string name = 2;
+        uint64 id = 1;
+        string phone = 2;
+        string name = 3;
     }
+    repeated UserListItem items = 1;
 }
 
+message ListUserByIdReq {
+    repeated uint64 id = 1;
+}

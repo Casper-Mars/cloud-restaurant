@@ -22,6 +22,7 @@ type UserClient interface {
 	Heath(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListUer(ctx context.Context, in *OnePageUserReq, opts ...grpc.CallOption) (*UserListResp, error)
 	AddUser(ctx context.Context, in *AddUserReq, opts ...grpc.CallOption) (*UserModifyResp, error)
+	ListUserByIds(ctx context.Context, in *ListUserByIdReq, opts ...grpc.CallOption) (*UserListResp, error)
 }
 
 type userClient struct {
@@ -59,6 +60,15 @@ func (c *userClient) AddUser(ctx context.Context, in *AddUserReq, opts ...grpc.C
 	return out, nil
 }
 
+func (c *userClient) ListUserByIds(ctx context.Context, in *ListUserByIdReq, opts ...grpc.CallOption) (*UserListResp, error) {
+	out := new(UserListResp)
+	err := c.cc.Invoke(ctx, "/user.v1.User/ListUserByIds", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -66,6 +76,7 @@ type UserServer interface {
 	Heath(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	ListUer(context.Context, *OnePageUserReq) (*UserListResp, error)
 	AddUser(context.Context, *AddUserReq) (*UserModifyResp, error)
+	ListUserByIds(context.Context, *ListUserByIdReq) (*UserListResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -81,6 +92,9 @@ func (UnimplementedUserServer) ListUer(context.Context, *OnePageUserReq) (*UserL
 }
 func (UnimplementedUserServer) AddUser(context.Context, *AddUserReq) (*UserModifyResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddUser not implemented")
+}
+func (UnimplementedUserServer) ListUserByIds(context.Context, *ListUserByIdReq) (*UserListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUserByIds not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -149,6 +163,24 @@ func _User_AddUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_ListUserByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserByIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ListUserByIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/ListUserByIds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ListUserByIds(ctx, req.(*ListUserByIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -167,6 +199,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddUser",
 			Handler:    _User_AddUser_Handler,
+		},
+		{
+			MethodName: "ListUserByIds",
+			Handler:    _User_ListUserByIds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

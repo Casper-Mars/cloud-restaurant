@@ -15,114 +15,7 @@
   "produces": [
     "application/json"
   ],
-  "paths": {
-    "/food": {
-      "post": {
-        "operationId": "Food_Add",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/foodv1FoodModifyResp"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/foodv1AddFoodReq"
-            }
-          }
-        ],
-        "tags": [
-          "Food"
-        ]
-      },
-      "put": {
-        "operationId": "Food_Update",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/foodv1FoodModifyResp"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1UpdateFoodReq"
-            }
-          }
-        ],
-        "tags": [
-          "Food"
-        ]
-      }
-    },
-    "/food/page": {
-      "get": {
-        "operationId": "Food_Page",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1FoodListResp"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "pageIndex",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Food"
-        ]
-      }
-    }
-  },
+  "paths": {},
   "definitions": {
     "FoodListRespFoodItem": {
       "type": "object",
@@ -131,18 +24,6 @@
           "type": "string",
           "format": "uint64"
         },
-        "name": {
-          "type": "string"
-        },
-        "price": {
-          "type": "integer",
-          "format": "int64"
-        }
-      }
-    },
-    "foodv1AddFoodReq": {
-      "type": "object",
-      "properties": {
         "name": {
           "type": "string"
         },
@@ -199,22 +80,6 @@
           "items": {
             "$ref": "#/definitions/FoodListRespFoodItem"
           }
-        }
-      }
-    },
-    "v1UpdateFoodReq": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "price": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     }
