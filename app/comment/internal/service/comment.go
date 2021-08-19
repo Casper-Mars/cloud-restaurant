@@ -23,9 +23,33 @@ func NewCommentService(uc *biz.CommentUsecase, logger log.Logger) *CommentServic
 }
 
 func (c CommentService) AddComment(ctx context.Context, req *v1.CommentAddReq) (*v1.CommentModifyResp, error) {
-	panic("implement me")
+	id, err := c.uc.Add(ctx, &biz.CommentDO{
+		UserId:  req.UserId,
+		FoodId:  req.FoodId,
+		Comment: req.Comment,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &v1.CommentModifyResp{
+		Id: id,
+	}, nil
 }
 
 func (c CommentService) ListComment(ctx context.Context, empty *emptypb.Empty) (*v1.CommentList, error) {
-	panic("implement me")
+	list, err := c.uc.List(ctx)
+	if err != nil {
+		return nil, err
+	}
+	result := make([]*v1.CommentList_CommentListItem, len(list))
+	for i, k := range list {
+		result[i] = &v1.CommentList_CommentListItem{
+			Comment: k.Comment,
+			UserId:  k.UserId,
+			FoodId:  k.FoodId,
+		}
+	}
+	return &v1.CommentList{
+		Items: result,
+	}, nil
 }
