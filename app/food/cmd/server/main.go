@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/conf"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/jaeger"

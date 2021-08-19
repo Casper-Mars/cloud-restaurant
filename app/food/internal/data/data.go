@@ -2,8 +2,8 @@ package data
 
 import (
 	"context"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/conf"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/data/ent"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data/ent"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	_ "github.com/lib/pq"

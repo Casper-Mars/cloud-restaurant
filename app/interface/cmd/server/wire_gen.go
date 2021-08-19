@@ -6,10 +6,10 @@
 package main
 
 import (
-	"github.com/Casper-Mars/cloud-restaurant/interface/internal/biz"
-	"github.com/Casper-Mars/cloud-restaurant/interface/internal/conf"
-	"github.com/Casper-Mars/cloud-restaurant/interface/internal/server"
-	"github.com/Casper-Mars/cloud-restaurant/interface/internal/service"
+	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/server"
+	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -23,8 +23,10 @@ func initApp(confServer *conf.Server, data *conf.Data, logger log.Logger) (*krat
 	authService := service.NewAuthService(authUsecase, logger)
 	healthUsecase := biz.NewHealthUsecase(userClient)
 	healthService := service.NewHealthService(healthUsecase)
-	httpServer := server.NewHTTPServer(confServer, logger, authService, healthService)
-	grpcServer := server.NewGRPCServer(confServer, authService, logger)
+	userUsecase := biz.NewUserUsecase(userClient)
+	userService := service.NewUserService(userUsecase)
+	httpServer := server.NewHTTPServer(confServer, logger, authService, healthService, userService)
+	grpcServer := server.NewGRPCServer(confServer, authService, userService, logger)
 	app := newApp(logger, httpServer, grpcServer)
 	return app, func() {
 	}, nil

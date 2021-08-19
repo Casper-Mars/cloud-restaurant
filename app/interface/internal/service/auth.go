@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"github.com/Casper-Mars/cloud-restaurant/api/interface/v1"
-	"github.com/Casper-Mars/cloud-restaurant/interface/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -49,8 +49,8 @@ func (a AuthService) SelfInfo(ctx context.Context, empty *emptypb.Empty) (*v1.Se
 
 func (a AuthService) Registry(ctx context.Context, req *v1.RegistryReq) (*emptypb.Empty, error) {
 	err := a.uc.Registry(ctx, &biz.AuthDO{
-		Phone: req.Phone.String(),
-		Pwd:   req.Password.String(),
+		Phone: req.Phone.GetValue(),
+		Pwd:   req.Password.GetValue(),
 	})
 	return &emptypb.Empty{}, err
 }

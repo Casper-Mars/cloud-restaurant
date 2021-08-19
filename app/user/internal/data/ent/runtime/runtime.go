@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/runtime.go
+// The schema-stitching logic is generated in github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/runtime.go
 
 const (
 	Version = "v0.8.0"                                          // Version of ent codegen.

@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/predicate"
-	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/user"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/predicate"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/user"
 
 	"entgo.io/ent"
 )

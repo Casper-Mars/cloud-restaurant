@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/user"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/user"
 )
 
 // User is the model entity for the User schema.

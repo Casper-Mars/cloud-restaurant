@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/migrate"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/migrate"
 
-	"github.com/Casper-Mars/cloud-restaurant/user/internal/data/ent/user"
+	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/data/ent/user"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"

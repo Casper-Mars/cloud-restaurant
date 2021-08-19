@@ -10,8 +10,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/data/ent/food"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/data/ent/predicate"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data/ent/food"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data/ent/predicate"
 )
 
 // FoodUpdate is the builder for updating Food entities.

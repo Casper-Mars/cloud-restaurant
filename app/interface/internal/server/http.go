@@ -2,8 +2,8 @@ package server
 
 import (
 	v1 "github.com/Casper-Mars/cloud-restaurant/api/interface/v1"
-	"github.com/Casper-Mars/cloud-restaurant/interface/internal/conf"
-	"github.com/Casper-Mars/cloud-restaurant/interface/internal/service"
+	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
@@ -14,7 +14,7 @@ import (
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, logger log.Logger, auth *service.AuthService, health *service.HealthService) *http.Server {
+func NewHTTPServer(c *conf.Server, logger log.Logger, auth *service.AuthService, health *service.HealthService, user *service.UserService) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -36,5 +36,6 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, auth *service.AuthService,
 	srv := http.NewServer(opts...)
 	v1.RegisterAuthHTTPServer(srv, auth)
 	v1.RegisterHealthHTTPServer(srv, health)
+	v1.RegisterUserHTTPServer(srv, user)
 	return srv
 }

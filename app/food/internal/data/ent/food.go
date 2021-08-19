@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/data/ent/food"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data/ent/food"
 )
 
 // Food is the model entity for the Food schema.

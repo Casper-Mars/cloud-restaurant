@@ -6,11 +6,11 @@
 package main
 
 import (
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/biz"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/conf"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/data"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/server"
-	"github.com/Casper-Mars/cloud-restaurant/food/internal/service"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/biz"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/data"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/server"
+	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 )
