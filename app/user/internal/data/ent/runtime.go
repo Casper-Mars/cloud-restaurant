@@ -16,25 +16,25 @@ func init() {
 	userFields := schema.User{}.Fields()
 	_ = userFields
 	// userDescCreateTime is the schema descriptor for createTime field.
-	userDescCreateTime := userFields[1].Descriptor()
+	userDescCreateTime := userFields[0].Descriptor()
 	// user.DefaultCreateTime holds the default value on creation for the createTime field.
 	user.DefaultCreateTime = userDescCreateTime.Default.(func() time.Time)
 	// userDescUpdateTime is the schema descriptor for updateTime field.
-	userDescUpdateTime := userFields[2].Descriptor()
+	userDescUpdateTime := userFields[1].Descriptor()
 	// user.DefaultUpdateTime holds the default value on creation for the updateTime field.
 	user.DefaultUpdateTime = userDescUpdateTime.Default.(func() time.Time)
 	// user.UpdateDefaultUpdateTime holds the default value on update for the updateTime field.
 	user.UpdateDefaultUpdateTime = userDescUpdateTime.UpdateDefault.(func() time.Time)
 	// userDescDeleteFlag is the schema descriptor for delete_flag field.
-	userDescDeleteFlag := userFields[3].Descriptor()
+	userDescDeleteFlag := userFields[2].Descriptor()
 	// user.DefaultDeleteFlag holds the default value on creation for the delete_flag field.
 	user.DefaultDeleteFlag = userDescDeleteFlag.Default.(bool)
 	// userDescPhone is the schema descriptor for phone field.
-	userDescPhone := userFields[5].Descriptor()
+	userDescPhone := userFields[4].Descriptor()
 	// user.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
 	user.PhoneValidator = userDescPhone.Validators[0].(func(string) error)
 	// userDescPwd is the schema descriptor for pwd field.
-	userDescPwd := userFields[6].Descriptor()
+	userDescPwd := userFields[5].Descriptor()
 	// user.PwdValidator is a validator for the "pwd" field. It is called by the builders before save.
 	user.PwdValidator = userDescPwd.Validators[0].(func(string) error)
 }
