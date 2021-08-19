@@ -1,0 +1,153 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/interface/v1/comment.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Comment"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/comment": {
+      "post": {
+        "operationId": "Comment_AddComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/interfacev1CommentModifyResp"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/interfacev1CommentAddReq"
+            }
+          }
+        ],
+        "tags": [
+          "Comment"
+        ]
+      }
+    },
+    "/comment/list": {
+      "get": {
+        "operationId": "Comment_ListComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListCommentRespListCommentItem"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Comment"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ListCommentRespListCommentItem": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "foodId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "foodName": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "interfacev1CommentAddReq": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "foodId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "interfacev1CommentModifyResp": {
+      "type": "object",
+      "properties": {
+        "commentId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

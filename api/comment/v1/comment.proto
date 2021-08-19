@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package comment.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/Casper-Mars/cloud-restaurant/api/comment/v1;v1";
+
+service Comment {
+    rpc AddComment(CommentAddReq) returns (CommentModifyResp);
+    rpc ListComment(google.protobuf.Empty) returns (CommentList);
+
+}
+
+
+message CommentAddReq {
+    uint64 user_id = 1;
+    uint64 food_id = 2;
+    string comment = 3;
+}
+
+message CommentModifyResp {
+    uint64 id = 1;
+}
+
+message CommentList {
+    message CommentListItem {
+        uint64 id = 1;
+        uint64 user_id = 2;
+        uint64 food_id = 3;
+        string comment = 4;
+    }
+    repeated CommentListItem items = 1;
+}
+

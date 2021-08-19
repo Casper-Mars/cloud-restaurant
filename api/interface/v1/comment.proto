@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package interface.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1";
+
+
+service Comment {
+
+    rpc AddComment(CommentAddReq) returns (CommentModifyResp) {
+        option (google.api.http) = {
+            post: "/comment"
+            body: "*"
+        };
+    }
+    rpc ListComment(google.protobuf.Empty) returns (ListCommentResp.ListCommentItem) {
+        option (google.api.http) = {
+            get: "/comment/list"
+        };
+    }
+
+
+}
+
+message CommentAddReq {
+    google.protobuf.UInt64Value user_id = 1;
+    google.protobuf.UInt64Value food_id = 2;
+    google.protobuf.StringValue comment = 3;
+}
+
+
+message CommentModifyResp {
+    uint64 comment_id = 1;
+}
+
+message ListCommentResp {
+    message ListCommentItem {
+        uint64 user_id = 1;
+        string user_name = 2;
+        uint64 food_id = 3;
+        string food_name = 4;
+        string comment = 5;
+    }
+    repeated ListCommentItem items = 1;
+}
+
+
