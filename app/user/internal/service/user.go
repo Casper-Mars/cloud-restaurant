@@ -57,3 +57,21 @@ func (u UserService) Heath(ctx context.Context, in *emptypb.Empty) (*emptypb.Emp
 	fmt.Println("get a call")
 	return &emptypb.Empty{}, nil
 }
+
+func (u UserService) ListUserByIds(ctx context.Context, in *v1.ListUserByIdReq) (*v1.UserListResp, error) {
+	users := u.uc.ListByIds(ctx, in.Id)
+	if users == nil {
+		return nil, nil
+	}
+	result := make([]*v1.UserListResp_UserListItem, len(users))
+	for i, k := range users {
+		result[i] = &v1.UserListResp_UserListItem{
+			Id:    k.Id,
+			Name:  k.Name,
+			Phone: k.Phone,
+		}
+	}
+	return &v1.UserListResp{
+		Items: result,
+	}, nil
+}

@@ -16,6 +16,7 @@ type UserRepo interface {
 	AddUser(ctx context.Context, user *User) error
 	UpdateUser(ctx context.Context, user *User) error
 	List(ctx context.Context) ([]User, error)
+	ListByIds(ctx context.Context, ids []uint64) ([]User, error)
 }
 
 type UserUsecase struct {
@@ -45,4 +46,22 @@ func (receiver UserUsecase) List(ctx context.Context) []User {
 		return nil
 	}
 	return list
+}
+
+func (receiver UserUsecase) ListByIds(ctx context.Context, ids []uint64) []*User {
+	users, err := receiver.repo.ListByIds(ctx, ids)
+	if err != nil {
+		receiver.log.Error(err)
+		return nil
+	}
+	result := make([]*User, len(users))
+
+	for i, k := range users {
+		result[i] = &User{
+			Id:    k.Id,
+			Name:  k.Name,
+			Phone: k.Phone,
+		}
+	}
+	return result
 }
