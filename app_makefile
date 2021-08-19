@@ -2,6 +2,7 @@ GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
 INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
 API_PROTO_FILES=$(shell find api -name *.proto)
+IMAGE_NAME=registry.cn-hangzhou.aliyuncs.com/cloud_restaurant/user
 
 .PHONY: init
 # init env
@@ -27,7 +28,6 @@ errors:
 # generate internal proto
 config:
 	protoc --proto_path=. \
-	       --proto_path=./third_party \
  	       --go_out=paths=source_relative:. \
 	       $(INTERNAL_PROTO_FILES)
 
@@ -46,7 +46,7 @@ api:
 .PHONY: build
 # build
 build:
-	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
+	mkdir -p bin/ && GOOS=linux GOARCH=amd64 go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
 
 .PHONY: all
 # generate all
@@ -74,3 +74,8 @@ help:
 
 .DEFAULT_GOAL := help
 
+.PHONY: package
+package:
+	make build
+	docker build -t ${IMAGE_NAME} .
+	docker push ${IMAGE_NAME}

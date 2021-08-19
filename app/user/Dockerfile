@@ -1,15 +1,8 @@
-FROM golang:1.16.7-buster AS builder
-
-COPY . /src
-WORKDIR /src
-
-RUN GOPROXY=https://goproxy.cn make build
-
 FROM debian:stable-slim
 
 
-COPY --from=builder /src/bin /app
-COPY --from=builder /src/configs /app/configs
+COPY  ./bin /app
+COPY  ./configs /app/configs
 
 WORKDIR /app
 
