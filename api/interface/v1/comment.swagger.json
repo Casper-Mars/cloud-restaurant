@@ -55,7 +55,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/ListCommentRespListCommentItem"
+              "$ref": "#/definitions/v1ListCommentResp"
             }
           },
           "default": {
@@ -145,6 +145,17 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1ListCommentResp": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListCommentRespListCommentItem"
           }
         }
       }

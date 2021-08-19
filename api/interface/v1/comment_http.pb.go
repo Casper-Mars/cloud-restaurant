@@ -20,7 +20,7 @@ const _ = http.SupportPackageIsVersion1
 
 type CommentHTTPServer interface {
 	AddComment(context.Context, *CommentAddReq) (*CommentModifyResp, error)
-	ListComment(context.Context, *emptypb.Empty) (*ListCommentResp_ListCommentItem, error)
+	ListComment(context.Context, *emptypb.Empty) (*ListCommentResp, error)
 }
 
 func RegisterCommentHTTPServer(s *http.Server, srv CommentHTTPServer) {
@@ -62,14 +62,14 @@ func _Comment_ListComment0_HTTP_Handler(srv CommentHTTPServer) func(ctx http.Con
 		if err != nil {
 			return err
 		}
-		reply := out.(*ListCommentResp_ListCommentItem)
+		reply := out.(*ListCommentResp)
 		return ctx.Result(200, reply)
 	}
 }
 
 type CommentHTTPClient interface {
 	AddComment(ctx context.Context, req *CommentAddReq, opts ...http.CallOption) (rsp *CommentModifyResp, err error)
-	ListComment(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *ListCommentResp_ListCommentItem, err error)
+	ListComment(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *ListCommentResp, err error)
 }
 
 type CommentHTTPClientImpl struct {
@@ -93,8 +93,8 @@ func (c *CommentHTTPClientImpl) AddComment(ctx context.Context, in *CommentAddRe
 	return &out, err
 }
 
-func (c *CommentHTTPClientImpl) ListComment(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*ListCommentResp_ListCommentItem, error) {
-	var out ListCommentResp_ListCommentItem
+func (c *CommentHTTPClientImpl) ListComment(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*ListCommentResp, error) {
+	var out ListCommentResp
 	pattern := "/comment/list"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/interface.v1.Comment/ListComment"))

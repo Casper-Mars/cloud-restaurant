@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommentClient interface {
 	AddComment(ctx context.Context, in *CommentAddReq, opts ...grpc.CallOption) (*CommentModifyResp, error)
-	ListComment(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListCommentResp_ListCommentItem, error)
+	ListComment(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListCommentResp, error)
 }
 
 type commentClient struct {
@@ -40,8 +40,8 @@ func (c *commentClient) AddComment(ctx context.Context, in *CommentAddReq, opts 
 	return out, nil
 }
 
-func (c *commentClient) ListComment(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListCommentResp_ListCommentItem, error) {
-	out := new(ListCommentResp_ListCommentItem)
+func (c *commentClient) ListComment(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListCommentResp, error) {
+	out := new(ListCommentResp)
 	err := c.cc.Invoke(ctx, "/interface.v1.Comment/ListComment", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (c *commentClient) ListComment(ctx context.Context, in *emptypb.Empty, opts
 // for forward compatibility
 type CommentServer interface {
 	AddComment(context.Context, *CommentAddReq) (*CommentModifyResp, error)
-	ListComment(context.Context, *emptypb.Empty) (*ListCommentResp_ListCommentItem, error)
+	ListComment(context.Context, *emptypb.Empty) (*ListCommentResp, error)
 	mustEmbedUnimplementedCommentServer()
 }
 
@@ -65,7 +65,7 @@ type UnimplementedCommentServer struct {
 func (UnimplementedCommentServer) AddComment(context.Context, *CommentAddReq) (*CommentModifyResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddComment not implemented")
 }
-func (UnimplementedCommentServer) ListComment(context.Context, *emptypb.Empty) (*ListCommentResp_ListCommentItem, error) {
+func (UnimplementedCommentServer) ListComment(context.Context, *emptypb.Empty) (*ListCommentResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListComment not implemented")
 }
 func (UnimplementedCommentServer) mustEmbedUnimplementedCommentServer() {}
