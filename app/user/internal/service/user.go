@@ -24,7 +24,18 @@ func NewUserService(uc *biz.UserUsecase, logger log.Logger) *UserService {
 }
 
 func (u UserService) ListUer(ctx context.Context, req *v1.OnePageUserReq) (*v1.UserListResp, error) {
-	panic("implement me")
+	list := u.uc.List(ctx)
+	result := make([]*v1.UserListResp_UserListItem, len(list))
+	for i, k := range list {
+		result[i] = &v1.UserListResp_UserListItem{
+			Id:    k.Id,
+			Name:  k.Name,
+			Phone: k.Phone,
+		}
+	}
+	return &v1.UserListResp{
+		Items: result,
+	}, nil
 }
 
 func (u UserService) AddUser(ctx context.Context, req *v1.AddUserReq) (*v1.UserModifyResp, error) {
