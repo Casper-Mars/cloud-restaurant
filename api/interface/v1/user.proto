@@ -3,26 +3,41 @@ syntax = "proto3";
 package interface.v1;
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1";
 
 
 service User {
-    rpc List(UserListReq) returns (UserList) {
+    rpc List(google.protobuf.Empty) returns (UserList) {
         option (google.api.http) = {
             get: "/user/list"
         };
     }
+    rpc Add(UserAddReq) returns (UserModifyResp) {
+        option (google.api.http) = {
+            post: "/user"
+            body: "*"
+        };
+    }
 }
 
-
-message UserListReq {
-
+message UserAddReq {
+    string phone = 1;
+    string name = 2;
+    string password = 3;
 }
+
+message UserModifyResp {
+    uint64 id = 1;
+}
+
 
 message UserList {
     message UserListItem {
-
+        uint64 id = 1;
+        string phone = 2;
+        string name = 3;
     }
     repeated UserListItem items = 1;
 }

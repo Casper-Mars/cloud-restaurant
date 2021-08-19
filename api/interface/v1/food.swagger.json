@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api/food/v1/food.proto",
+    "title": "api/interface/v1/food.proto",
     "version": "version not set"
   },
   "tags": [
@@ -18,12 +18,12 @@
   "paths": {
     "/food": {
       "post": {
-        "operationId": "Food_Add",
+        "operationId": "Food_AddFood",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/foodv1FoodModifyResp"
+              "$ref": "#/definitions/interfacev1FoodModifyResp"
             }
           },
           "default": {
@@ -39,37 +39,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/foodv1AddFoodReq"
-            }
-          }
-        ],
-        "tags": [
-          "Food"
-        ]
-      },
-      "put": {
-        "operationId": "Food_Update",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/foodv1FoodModifyResp"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1UpdateFoodReq"
+              "$ref": "#/definitions/interfacev1AddFoodReq"
             }
           }
         ],
@@ -78,14 +48,14 @@
         ]
       }
     },
-    "/food/page": {
+    "/food/list": {
       "get": {
-        "operationId": "Food_Page",
+        "operationId": "Food_List",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1FoodListResp"
+              "$ref": "#/definitions/v1FoodList"
             }
           },
           "default": {
@@ -95,28 +65,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "pageIndex",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
         "tags": [
           "Food"
         ]
@@ -124,7 +72,7 @@
     }
   },
   "definitions": {
-    "FoodListRespFoodItem": {
+    "FoodListFoodListItem": {
       "type": "object",
       "properties": {
         "id": {
@@ -133,26 +81,18 @@
         },
         "name": {
           "type": "string"
-        },
-        "price": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     },
-    "foodv1AddFoodReq": {
+    "interfacev1AddFoodReq": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string"
-        },
-        "price": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     },
-    "foodv1FoodModifyResp": {
+    "interfacev1FoodModifyResp": {
       "type": "object",
       "properties": {
         "id": {
@@ -191,30 +131,14 @@
         }
       }
     },
-    "v1FoodListResp": {
+    "v1FoodList": {
       "type": "object",
       "properties": {
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/FoodListRespFoodItem"
+            "$ref": "#/definitions/FoodListFoodListItem"
           }
-        }
-      }
-    },
-    "v1UpdateFoodReq": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "price": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     }

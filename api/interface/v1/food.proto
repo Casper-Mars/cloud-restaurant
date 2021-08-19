@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package interface.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+
+option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1";
+
+
+service Food {
+    rpc AddFood(AddFoodReq) returns (FoodModifyResp) {
+        option (google.api.http) = {
+            post: "/food"
+            body: "*"
+        };
+    }
+    rpc List(google.protobuf.Empty) returns (FoodList) {
+        option (google.api.http) = {
+            get: "/food/list"
+        };
+    }
+}
+
+message AddFoodReq {
+    string name = 1;
+}
+
+message FoodModifyResp {
+    uint64 id = 1;
+}
+
+message FoodList {
+    message FoodListItem {
+        uint64 id = 1;
+        string name = 2;
+    }
+    repeated FoodListItem items = 1;
+}
+
+
+
+
+
+
+
+
+
+
+

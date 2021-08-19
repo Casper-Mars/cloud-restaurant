@@ -47,10 +47,7 @@
         }
       }
     },
-    "v1UserListResp": {
-      "type": "object"
-    },
-    "v1UserModifyResp": {
+    "userv1UserModifyResp": {
       "type": "object",
       "properties": {
         "id": {
@@ -58,6 +55,9 @@
           "format": "uint64"
         }
       }
+    },
+    "v1UserListResp": {
+      "type": "object"
     }
   }
 }

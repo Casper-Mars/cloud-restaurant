@@ -8,6 +8,7 @@ import (
 	context "context"
 	http "github.com/go-kratos/kratos/v2/transport/http"
 	binding "github.com/go-kratos/kratos/v2/transport/http/binding"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -18,23 +19,25 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type UserHTTPServer interface {
-	List(context.Context, *UserListReq) (*UserList, error)
+	Add(context.Context, *UserAddReq) (*UserModifyResp, error)
+	List(context.Context, *emptypb.Empty) (*UserList, error)
 }
 
 func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r := s.Route("/")
-	r.GET("/user/list", _User_List0_HTTP_Handler(srv))
+	r.GET("/user/list", _User_List1_HTTP_Handler(srv))
+	r.POST("/user", _User_Add0_HTTP_Handler(srv))
 }
 
-func _User_List0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _User_List1_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in UserListReq
+		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, "/interface.v1.User/List")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.List(ctx, req.(*UserListReq))
+			return srv.List(ctx, req.(*emptypb.Empty))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -45,8 +48,28 @@ func _User_List0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
 	}
 }
 
+func _User_Add0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UserAddReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/interface.v1.User/Add")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Add(ctx, req.(*UserAddReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*UserModifyResp)
+		return ctx.Result(200, reply)
+	}
+}
+
 type UserHTTPClient interface {
-	List(ctx context.Context, req *UserListReq, opts ...http.CallOption) (rsp *UserList, err error)
+	Add(ctx context.Context, req *UserAddReq, opts ...http.CallOption) (rsp *UserModifyResp, err error)
+	List(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *UserList, err error)
 }
 
 type UserHTTPClientImpl struct {
@@ -57,7 +80,20 @@ func NewUserHTTPClient(client *http.Client) UserHTTPClient {
 	return &UserHTTPClientImpl{client}
 }
 
-func (c *UserHTTPClientImpl) List(ctx context.Context, in *UserListReq, opts ...http.CallOption) (*UserList, error) {
+func (c *UserHTTPClientImpl) Add(ctx context.Context, in *UserAddReq, opts ...http.CallOption) (*UserModifyResp, error) {
+	var out UserModifyResp
+	pattern := "/user"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/interface.v1.User/Add"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) List(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*UserList, error) {
 	var out UserList
 	pattern := "/user/list"
 	path := binding.EncodeURL(pattern, in, true)

@@ -25,12 +25,12 @@ type FoodHTTPServer interface {
 
 func RegisterFoodHTTPServer(s *http.Server, srv FoodHTTPServer) {
 	r := s.Route("/")
-	r.POST("/food", _Food_Add0_HTTP_Handler(srv))
+	r.POST("/food", _Food_Add1_HTTP_Handler(srv))
 	r.PUT("/food", _Food_Update0_HTTP_Handler(srv))
 	r.GET("/food/page", _Food_Page0_HTTP_Handler(srv))
 }
 
-func _Food_Add0_HTTP_Handler(srv FoodHTTPServer) func(ctx http.Context) error {
+func _Food_Add1_HTTP_Handler(srv FoodHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in AddFoodReq
 		if err := ctx.Bind(&in); err != nil {

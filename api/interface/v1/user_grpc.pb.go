@@ -7,6 +7,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -18,7 +19,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	List(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserList, error)
+	List(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*UserList, error)
+	Add(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserModifyResp, error)
 }
 
 type userClient struct {
@@ -29,9 +31,18 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) List(ctx context.Context, in *UserListReq, opts ...grpc.CallOption) (*UserList, error) {
+func (c *userClient) List(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*UserList, error) {
 	out := new(UserList)
 	err := c.cc.Invoke(ctx, "/interface.v1.User/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) Add(ctx context.Context, in *UserAddReq, opts ...grpc.CallOption) (*UserModifyResp, error) {
+	out := new(UserModifyResp)
+	err := c.cc.Invoke(ctx, "/interface.v1.User/Add", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +53,8 @@ func (c *userClient) List(ctx context.Context, in *UserListReq, opts ...grpc.Cal
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	List(context.Context, *UserListReq) (*UserList, error)
+	List(context.Context, *emptypb.Empty) (*UserList, error)
+	Add(context.Context, *UserAddReq) (*UserModifyResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -50,8 +62,11 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) List(context.Context, *UserListReq) (*UserList, error) {
+func (UnimplementedUserServer) List(context.Context, *emptypb.Empty) (*UserList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedUserServer) Add(context.Context, *UserAddReq) (*UserModifyResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -67,7 +82,7 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 }
 
 func _User_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserListReq)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -79,7 +94,25 @@ func _User_List_Handler(srv interface{}, ctx context.Context, dec func(interface
 		FullMethod: "/interface.v1.User/List",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).List(ctx, req.(*UserListReq))
+		return srv.(UserServer).List(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserAddReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Add(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/interface.v1.User/Add",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Add(ctx, req.(*UserAddReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -94,6 +127,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _User_List_Handler,
+		},
+		{
+			MethodName: "Add",
+			Handler:    _User_Add_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
