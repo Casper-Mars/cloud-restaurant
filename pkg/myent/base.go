@@ -2,17 +2,12 @@ package myent
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema/field"
-	"github.com/Casper-Mars/cloud-restaurant/pkg/enum"
 	"time"
 )
 
 func BaseFields() []ent.Field {
 	return []ent.Field{
-		field.Uint64("id").Annotations(entsql.Annotation{
-			Incremental: &enum.Incremental,
-		}),
 		field.Time("createTime").Default(func() time.Time {
 			return time.Now()
 		}),

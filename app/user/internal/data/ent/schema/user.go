@@ -3,7 +3,7 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"github.com/Casper-Mars/cloud-restaurant/pkg/myent"
+	"time"
 )
 
 // User holds the schema definition for the User entity.
@@ -13,11 +13,20 @@ type User struct {
 
 // Fields of the User.
 func (User) Fields() []ent.Field {
-	return append(myent.BaseFields(),
+	return []ent.Field{
+		field.Time("createTime").Default(func() time.Time {
+			return time.Now()
+		}),
+		field.Time("updateTime").Default(func() time.Time {
+			return time.Now()
+		}).UpdateDefault(func() time.Time {
+			return time.Now()
+		}),
+		field.Bool("delete_flag").Default(false),
 		field.String("name"),
 		field.String("phone").NotEmpty(),
 		field.String("pwd").NotEmpty(),
-	)
+	}
 }
 
 // Edges of the User.
