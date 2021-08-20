@@ -32,6 +32,11 @@ message Data {
         string driver = 1;
         string source = 2;
     }
+    message Elasticsearch {
+        string url = 1;
+        string username = 2;
+        string password = 3;
+    }
     message Redis {
         string network = 1;
         string addr = 2;
@@ -40,6 +45,7 @@ message Data {
     }
     Database database = 1;
     Redis redis = 2;
+    Elasticsearch elasticsearch = 3;
 }
 
 message Tracing {
