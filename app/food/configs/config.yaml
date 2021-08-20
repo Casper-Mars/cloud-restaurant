@@ -13,3 +13,6 @@ data:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
     write_timeout: 0.2s
+tracing:
+  #  endpoint: http://tracing-cn-guangzhou.arms.aliyuncs.com/adapt_atma6tpxtr@5f4c0b1eba3cd97_atma6tpxtr@53df7ad2afe8301/api/traces
+  endpoint: http://192.168.30.21:14268/api/traces

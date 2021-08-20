@@ -19,8 +19,6 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FoodClient interface {
 	Add(ctx context.Context, in *AddFoodReq, opts ...grpc.CallOption) (*FoodModifyResp, error)
-	Update(ctx context.Context, in *UpdateFoodReq, opts ...grpc.CallOption) (*FoodModifyResp, error)
-	Page(ctx context.Context, in *OnePageFoodListReq, opts ...grpc.CallOption) (*FoodListResp, error)
 	ListByIds(ctx context.Context, in *ListFoodByIdReq, opts ...grpc.CallOption) (*FoodListResp, error)
 }
 
@@ -41,24 +39,6 @@ func (c *foodClient) Add(ctx context.Context, in *AddFoodReq, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *foodClient) Update(ctx context.Context, in *UpdateFoodReq, opts ...grpc.CallOption) (*FoodModifyResp, error) {
-	out := new(FoodModifyResp)
-	err := c.cc.Invoke(ctx, "/food.v1.Food/Update", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *foodClient) Page(ctx context.Context, in *OnePageFoodListReq, opts ...grpc.CallOption) (*FoodListResp, error) {
-	out := new(FoodListResp)
-	err := c.cc.Invoke(ctx, "/food.v1.Food/Page", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *foodClient) ListByIds(ctx context.Context, in *ListFoodByIdReq, opts ...grpc.CallOption) (*FoodListResp, error) {
 	out := new(FoodListResp)
 	err := c.cc.Invoke(ctx, "/food.v1.Food/ListByIds", in, out, opts...)
@@ -73,8 +53,6 @@ func (c *foodClient) ListByIds(ctx context.Context, in *ListFoodByIdReq, opts ..
 // for forward compatibility
 type FoodServer interface {
 	Add(context.Context, *AddFoodReq) (*FoodModifyResp, error)
-	Update(context.Context, *UpdateFoodReq) (*FoodModifyResp, error)
-	Page(context.Context, *OnePageFoodListReq) (*FoodListResp, error)
 	ListByIds(context.Context, *ListFoodByIdReq) (*FoodListResp, error)
 	mustEmbedUnimplementedFoodServer()
 }
@@ -85,12 +63,6 @@ type UnimplementedFoodServer struct {
 
 func (UnimplementedFoodServer) Add(context.Context, *AddFoodReq) (*FoodModifyResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
-}
-func (UnimplementedFoodServer) Update(context.Context, *UpdateFoodReq) (*FoodModifyResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
-}
-func (UnimplementedFoodServer) Page(context.Context, *OnePageFoodListReq) (*FoodListResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Page not implemented")
 }
 func (UnimplementedFoodServer) ListByIds(context.Context, *ListFoodByIdReq) (*FoodListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByIds not implemented")
@@ -126,42 +98,6 @@ func _Food_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Food_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateFoodReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FoodServer).Update(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/food.v1.Food/Update",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FoodServer).Update(ctx, req.(*UpdateFoodReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Food_Page_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OnePageFoodListReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FoodServer).Page(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/food.v1.Food/Page",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FoodServer).Page(ctx, req.(*OnePageFoodListReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Food_ListByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListFoodByIdReq)
 	if err := dec(in); err != nil {
@@ -190,14 +126,6 @@ var Food_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Add",
 			Handler:    _Food_Add_Handler,
-		},
-		{
-			MethodName: "Update",
-			Handler:    _Food_Update_Handler,
-		},
-		{
-			MethodName: "Page",
-			Handler:    _Food_Page_Handler,
 		},
 		{
 			MethodName: "ListByIds",

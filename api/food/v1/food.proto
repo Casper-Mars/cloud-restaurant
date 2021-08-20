@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package food.v1;
 
-import "google/protobuf/wrappers.proto";
 
 option go_package = "github.com/Casper-Mars/cloud-restaurant/api/food/v1;v1";
 
@@ -27,11 +26,6 @@ message FoodModifyResp {
 }
 
 
-message OnePageFoodListReq {
-    google.protobuf.UInt32Value page_index = 1;
-    google.protobuf.UInt32Value page_size = 2;
-    string name = 3;
-}
 
 message FoodListResp {
     message FoodItem {
@@ -44,8 +38,6 @@ message FoodListResp {
 
 service Food {
     rpc Add(AddFoodReq) returns (FoodModifyResp);
-    rpc Update(UpdateFoodReq) returns (FoodModifyResp);
-    rpc Page(OnePageFoodListReq) returns (FoodListResp);
     rpc ListByIds(ListFoodByIdReq) returns (FoodListResp);
 }
 

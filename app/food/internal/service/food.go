@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"github.com/Casper-Mars/cloud-restaurant/api/food/v1"
+	v1 "github.com/Casper-Mars/cloud-restaurant/api/food/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -22,13 +22,32 @@ func NewFoodService(uc *biz.FoodUsecase, logger log.Logger) *FoodService {
 }
 
 func (f FoodService) Add(ctx context.Context, req *v1.AddFoodReq) (*v1.FoodModifyResp, error) {
-	panic("implement me")
+	do := &biz.FoodDO{
+		Name: req.Name,
+	}
+	err := f.uc.AddFood(ctx, do)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.FoodModifyResp{
+		Id: do.Id,
+	}, nil
 }
 
-func (f FoodService) Update(ctx context.Context, req *v1.UpdateFoodReq) (*v1.FoodModifyResp, error) {
-	panic("implement me")
-}
+func (f FoodService) ListByIds(ctx context.Context, req *v1.ListFoodByIdReq) (*v1.FoodListResp, error) {
 
-func (f FoodService) Page(ctx context.Context, req *v1.OnePageFoodListReq) (*v1.FoodListResp, error) {
-	panic("implement me")
+	foods, err := f.uc.ListByIds(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	result := make([]*v1.FoodListResp_FoodItem, len(foods))
+	for i, k := range foods {
+		result[i] = &v1.FoodListResp_FoodItem{
+			Id:   k.Id,
+			Name: k.Name,
+		}
+	}
+	return &v1.FoodListResp{
+		Items: result,
+	}, nil
 }
