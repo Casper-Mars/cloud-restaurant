@@ -65,8 +65,6 @@ func (receiver CommentUsecase) ListComment(ctx context.Context) []*CommentDO {
 		userIds[i] = k.UserId
 		foodIds[i] = k.FoodId
 	}
-	//userCh := make(chan map[uint64]string, 1)
-	//foodCh := make(chan map[uint64]string, 1)
 	userMap := make(map[uint64]string, len(userIds))
 	foodMap := make(map[uint64]string, len(userIds))
 	/*search the user and food info*/
@@ -88,7 +86,7 @@ func (receiver CommentUsecase) ListComment(ctx context.Context) []*CommentDO {
 		foods, err2 := receiver.fc.ListByIds(ctx, &foodv1.ListFoodByIdReq{
 			Id: foodIds,
 		})
-		if err2 != nil {
+		if err2 == nil {
 			foodMap = make(map[uint64]string, len(foods.Items))
 			for _, f := range foods.Items {
 				foodMap[f.Id] = f.Name
