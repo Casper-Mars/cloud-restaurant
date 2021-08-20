@@ -15,6 +15,13 @@ type CommentService struct {
 	log *log.Helper
 }
 
+func NewCommentService(cc *biz.CommentUsecase, logger log.Logger) *CommentService {
+	return &CommentService{
+		cc:  cc,
+		log: log.NewHelper(logger),
+	}
+}
+
 func (c CommentService) AddComment(ctx context.Context, req *v1.CommentAddReq) (*v1.CommentModifyResp, error) {
 
 	comment, err := c.cc.AddComment(ctx, biz.CommentDO{

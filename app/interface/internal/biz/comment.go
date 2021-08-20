@@ -71,6 +71,7 @@ func (receiver CommentUsecase) ListComment(ctx context.Context) []*CommentDO {
 	foodMap := make(map[uint64]string, len(userIds))
 	/*search the user and food info*/
 	group := sync.WaitGroup{}
+	group.Add(2)
 	go func() {
 		users, err2 := receiver.uc.ListUserByIds(ctx, &userv1.ListUserByIdReq{
 			Id: userIds,
@@ -81,7 +82,7 @@ func (receiver CommentUsecase) ListComment(ctx context.Context) []*CommentDO {
 				userMap[u.Id] = u.Name
 			}
 		}
-		group.Done()
+		defer group.Done()
 	}()
 	go func() {
 		foods, err2 := receiver.fc.ListByIds(ctx, &foodv1.ListFoodByIdReq{
@@ -93,7 +94,7 @@ func (receiver CommentUsecase) ListComment(ctx context.Context) []*CommentDO {
 				foodMap[f.Id] = f.Name
 			}
 		}
-		group.Done()
+		defer group.Done()
 	}()
 	group.Wait()
 	/*fill the user and food info */
