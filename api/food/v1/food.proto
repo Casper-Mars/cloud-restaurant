@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package food.v1;
 
+import "google/protobuf/empty.proto";
 
 option go_package = "github.com/Casper-Mars/cloud-restaurant/api/food/v1;v1";
 
@@ -38,6 +39,7 @@ message FoodListResp {
 
 service Food {
     rpc Add(AddFoodReq) returns (FoodModifyResp);
+    rpc List(google.protobuf.Empty) returns (FoodListResp);
     rpc ListByIds(ListFoodByIdReq) returns (FoodListResp);
 }
 

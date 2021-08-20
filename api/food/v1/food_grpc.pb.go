@@ -7,6 +7,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FoodClient interface {
 	Add(ctx context.Context, in *AddFoodReq, opts ...grpc.CallOption) (*FoodModifyResp, error)
+	List(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*FoodListResp, error)
 	ListByIds(ctx context.Context, in *ListFoodByIdReq, opts ...grpc.CallOption) (*FoodListResp, error)
 }
 
@@ -39,6 +41,15 @@ func (c *foodClient) Add(ctx context.Context, in *AddFoodReq, opts ...grpc.CallO
 	return out, nil
 }
 
+func (c *foodClient) List(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*FoodListResp, error) {
+	out := new(FoodListResp)
+	err := c.cc.Invoke(ctx, "/food.v1.Food/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *foodClient) ListByIds(ctx context.Context, in *ListFoodByIdReq, opts ...grpc.CallOption) (*FoodListResp, error) {
 	out := new(FoodListResp)
 	err := c.cc.Invoke(ctx, "/food.v1.Food/ListByIds", in, out, opts...)
@@ -53,6 +64,7 @@ func (c *foodClient) ListByIds(ctx context.Context, in *ListFoodByIdReq, opts ..
 // for forward compatibility
 type FoodServer interface {
 	Add(context.Context, *AddFoodReq) (*FoodModifyResp, error)
+	List(context.Context, *emptypb.Empty) (*FoodListResp, error)
 	ListByIds(context.Context, *ListFoodByIdReq) (*FoodListResp, error)
 	mustEmbedUnimplementedFoodServer()
 }
@@ -63,6 +75,9 @@ type UnimplementedFoodServer struct {
 
 func (UnimplementedFoodServer) Add(context.Context, *AddFoodReq) (*FoodModifyResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
+}
+func (UnimplementedFoodServer) List(context.Context, *emptypb.Empty) (*FoodListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 func (UnimplementedFoodServer) ListByIds(context.Context, *ListFoodByIdReq) (*FoodListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByIds not implemented")
@@ -98,6 +113,24 @@ func _Food_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Food_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoodServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/food.v1.Food/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoodServer).List(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Food_ListByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListFoodByIdReq)
 	if err := dec(in); err != nil {
@@ -126,6 +159,10 @@ var Food_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Add",
 			Handler:    _Food_Add_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _Food_List_Handler,
 		},
 		{
 			MethodName: "ListByIds",
