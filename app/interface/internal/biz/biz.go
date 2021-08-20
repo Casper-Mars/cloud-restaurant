@@ -15,7 +15,7 @@ var ProviderSet = wire.NewSet(NewAuthUsecase, NewUserClient, NewFoodClient, NewC
 func NewUserClient() userv1.UserClient {
 	con, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("dns:///127.0.0.1:9001"),
+		grpc.WithEndpoint("dns:///user.default.svc.cluster.local:9000"),
 	)
 	if err != nil {
 		panic(err)
@@ -26,7 +26,7 @@ func NewUserClient() userv1.UserClient {
 func NewFoodClient() foodv1.FoodClient {
 	con, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("dns:///127.0.0.1:9002"),
+		grpc.WithEndpoint("dns:///food.default.svc.cluster.local:9000"),
 	)
 	if err != nil {
 		panic(err)
@@ -36,7 +36,7 @@ func NewFoodClient() foodv1.FoodClient {
 func NewCommentClient() commentv1.CommentClient {
 	con, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("dns:///127.0.0.1:9003"),
+		grpc.WithEndpoint("dns:///comment.default.svc.cluster.local:9000"),
 	)
 	if err != nil {
 		panic(err)
