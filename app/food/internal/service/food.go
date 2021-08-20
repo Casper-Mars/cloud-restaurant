@@ -5,6 +5,7 @@ import (
 	v1 "github.com/Casper-Mars/cloud-restaurant/api/food/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/food/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type FoodService struct {
@@ -37,6 +38,23 @@ func (f FoodService) Add(ctx context.Context, req *v1.AddFoodReq) (*v1.FoodModif
 func (f FoodService) ListByIds(ctx context.Context, req *v1.ListFoodByIdReq) (*v1.FoodListResp, error) {
 
 	foods, err := f.uc.ListByIds(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	result := make([]*v1.FoodListResp_FoodItem, len(foods))
+	for i, k := range foods {
+		result[i] = &v1.FoodListResp_FoodItem{
+			Id:   k.Id,
+			Name: k.Name,
+		}
+	}
+	return &v1.FoodListResp{
+		Items: result,
+	}, nil
+}
+
+func (f FoodService) List(ctx context.Context, in *emptypb.Empty) (*v1.FoodListResp, error) {
+	foods, err := f.uc.List(ctx)
 	if err != nil {
 		return nil, err
 	}
