@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: gprc
+      targetPort: grpc
       protocol: TCP
-      name: gprc
+      name: grpc
   selector:
     {{- include "food.selectorLabels" . | nindent 4 }}
