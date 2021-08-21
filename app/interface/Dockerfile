@@ -3,6 +3,7 @@ FROM debian:stable-slim
 
 COPY  ./bin /app
 COPY  ./configs /app/configs
+COPY ./ca /app/ca
 
 WORKDIR /app
 

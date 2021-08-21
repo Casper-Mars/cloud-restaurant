@@ -2,13 +2,18 @@ package biz
 
 import (
 	"context"
+	"encoding/json"
 	commentv1 "github.com/Casper-Mars/cloud-restaurant/api/comment/v1"
 	foodv1 "github.com/Casper-Mars/cloud-restaurant/api/food/v1"
 	userv1 "github.com/Casper-Mars/cloud-restaurant/api/user/v1"
+	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/data"
 	"github.com/go-kratos/kratos/v2/log"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 	"sync"
 )
+
+var commentTopic = "comment"
 
 type CommentDO struct {
 	UserId   uint64
@@ -19,22 +24,25 @@ type CommentDO struct {
 }
 
 type CommentUsecase struct {
-	log *log.Helper
-	uc  userv1.UserClient
-	fc  foodv1.FoodClient
-	cc  commentv1.CommentClient
+	log  *log.Helper
+	uc   userv1.UserClient
+	fc   foodv1.FoodClient
+	cc   commentv1.CommentClient
+	data *data.Data
 }
 
-func NewCommentUsecase(logger log.Logger, uc userv1.UserClient, fc foodv1.FoodClient, cc commentv1.CommentClient) *CommentUsecase {
+func NewCommentUsecase(logger log.Logger, uc userv1.UserClient, fc foodv1.FoodClient, cc commentv1.CommentClient, data *data.Data) *CommentUsecase {
 	return &CommentUsecase{
-		log: log.NewHelper(logger),
-		uc:  uc,
-		fc:  fc,
-		cc:  cc,
+		log:  log.NewHelper(logger),
+		uc:   uc,
+		fc:   fc,
+		cc:   cc,
+		data: data,
 	}
 }
 
 func (receiver CommentUsecase) AddComment(ctx context.Context, do CommentDO) (uint64, error) {
+	//todo add transactions
 	comment, err := receiver.cc.AddComment(ctx, &commentv1.CommentAddReq{
 		Comment: do.Comment,
 		UserId:  do.UserId,
@@ -43,6 +51,18 @@ func (receiver CommentUsecase) AddComment(ctx context.Context, do CommentDO) (ui
 	if err != nil {
 		return 0, err
 	}
+	marshal, err := json.Marshal(comment)
+	if err != nil {
+		return 0, err
+	}
+	err = receiver.data.Kafka.Producer.Produce(&kafka.Message{
+		TopicPartition: kafka.TopicPartition{Topic: &commentTopic, Partition: kafka.PartitionAny},
+		Value:          marshal,
+	}, nil)
+	if err != nil {
+		receiver.log.Error(err)
+	}
+	receiver.data.Kafka.Producer.Flush(1000)
 	return comment.Id, nil
 }
 

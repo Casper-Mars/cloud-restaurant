@@ -19,7 +19,11 @@ data:
     password: Abcd123456
     enable_producer: true
     enable_consumer: true
-    ca_file: ./configs/ca.pem
+    ca_file: "./ca/ca.pem"
+  elasticsearch:
+    url: "http://es-cn-2r42bb1g70041hfoy.public.elasticsearch.aliyuncs.com:9200"
+    username: "elastic"
+    password: "Abcd123456@"
 
 tracing:
   endpoint: http://tracing-cn-guangzhou.arms.aliyuncs.com/adapt_atma6tpxtr@5f4c0b1eba3cd97_atma6tpxtr@53df7ad2afe8301/api/traces

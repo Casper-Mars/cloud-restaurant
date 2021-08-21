@@ -8,6 +8,7 @@ package main
 import (
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/biz"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/conf"
+	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/data"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/server"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/service"
 	"github.com/go-kratos/kratos/v2"
@@ -17,7 +18,7 @@ import (
 // Injectors from wire.go:
 
 // initApp init kratos application.
-func initApp(confServer *conf.Server, data *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
+func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
 	userClient := biz.NewUserClient()
 	authUsecase := biz.NewAuthUsecase(logger, userClient)
 	authService := service.NewAuthService(authUsecase, logger)
@@ -29,11 +30,18 @@ func initApp(confServer *conf.Server, data *conf.Data, logger log.Logger) (*krat
 	foodUsecase := biz.NewFoodUsecase(logger, foodClient)
 	foodService := service.NewFoodService(logger, foodUsecase)
 	commentClient := biz.NewCommentClient()
-	commentUsecase := biz.NewCommentUsecase(logger, userClient, foodClient, commentClient)
+	client := data.NewEsClient(confData)
+	kafkaData := data.NewKafkaData(confData)
+	dataData, cleanup, err := data.NewData(logger, client, kafkaData)
+	if err != nil {
+		return nil, nil, err
+	}
+	commentUsecase := biz.NewCommentUsecase(logger, userClient, foodClient, commentClient, dataData)
 	commentService := service.NewCommentService(commentUsecase, logger)
 	httpServer := server.NewHTTPServer(confServer, logger, authService, healthService, userService, foodService, commentService)
 	grpcServer := server.NewGRPCServer(confServer, authService, userService, logger)
 	app := newApp(logger, httpServer, grpcServer)
 	return app, func() {
+		cleanup()
 	}, nil
 }

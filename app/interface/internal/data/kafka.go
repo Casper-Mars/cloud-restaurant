@@ -6,8 +6,8 @@ import (
 )
 
 type KafkaData struct {
-	producer *kafka.Producer
-	consumer *kafka.Consumer
+	Producer *kafka.Producer
+	Consumer *kafka.Consumer
 }
 
 func NewKafkaData(c *conf.Data) *KafkaData {
@@ -26,6 +26,7 @@ func NewKafkaData(c *conf.Data) *KafkaData {
 		"sasl.password":                 c.Kafka.Password,
 		"sasl.mechanism":                "PLAIN",
 		"ssl.ca.location":               c.Kafka.CaFile,
+		"group.id":                      "interface-1",
 	}
 	var producer *kafka.Producer
 	var consumer *kafka.Consumer
@@ -41,7 +42,7 @@ func NewKafkaData(c *conf.Data) *KafkaData {
 		}
 	}
 	return &KafkaData{
-		producer: producer,
-		consumer: consumer,
+		Producer: producer,
+		Consumer: consumer,
 	}
 }
