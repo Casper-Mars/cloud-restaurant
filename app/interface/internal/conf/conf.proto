@@ -43,9 +43,18 @@ message Data {
         google.protobuf.Duration read_timeout = 3;
         google.protobuf.Duration write_timeout = 4;
     }
+    message Kafka {
+        string address = 1;
+        string username = 2;
+        string password = 3;
+        bool enable_producer = 4;
+        bool enable_consumer = 5;
+        string ca_file = 6;
+    }
     Database database = 1;
     Redis redis = 2;
     Elasticsearch elasticsearch = 3;
+    Kafka kafka = 4;
 }
 
 message Tracing {
