@@ -13,6 +13,13 @@ data:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
     write_timeout: 0.2s
+  kafka:
+    address: 120.79.212.109:9093,47.106.100.246:9093
+    username: casperkafka
+    password: Abcd123456
+    enable_producer: true
+    enable_consumer: true
+    ca_file: ./configs/ca.pem
 
 tracing:
   endpoint: http://tracing-cn-guangzhou.arms.aliyuncs.com/adapt_atma6tpxtr@5f4c0b1eba3cd97_atma6tpxtr@53df7ad2afe8301/api/traces
