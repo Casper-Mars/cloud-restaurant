@@ -31,8 +31,7 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	foodService := service.NewFoodService(logger, foodUsecase)
 	commentClient := biz.NewCommentClient()
 	client := data.NewEsClient(confData)
-	kafkaData := data.NewKafkaData(confData)
-	dataData, cleanup, err := data.NewData(logger, client, kafkaData)
+	dataData, cleanup, err := data.NewData(logger, client)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -2,12 +2,10 @@ package biz
 
 import (
 	"context"
-	"encoding/json"
 	commentv1 "github.com/Casper-Mars/cloud-restaurant/api/comment/v1"
 	foodv1 "github.com/Casper-Mars/cloud-restaurant/api/food/v1"
 	userv1 "github.com/Casper-Mars/cloud-restaurant/api/user/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/data"
-	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/go-kratos/kratos/v2/log"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"sync"
@@ -51,18 +49,18 @@ func (receiver CommentUsecase) AddComment(ctx context.Context, do CommentDO) (ui
 	if err != nil {
 		return 0, err
 	}
-	marshal, err := json.Marshal(comment)
-	if err != nil {
-		return 0, err
-	}
-	err = receiver.data.Kafka.Producer.Produce(&kafka.Message{
-		TopicPartition: kafka.TopicPartition{Topic: &commentTopic, Partition: kafka.PartitionAny},
-		Value:          marshal,
-	}, nil)
-	if err != nil {
-		receiver.log.Error(err)
-	}
-	receiver.data.Kafka.Producer.Flush(1000)
+	//marshal, err := json.Marshal(comment)
+	//if err != nil {
+	//	return 0, err
+	//}
+	//err = receiver.data.Kafka.Producer.Produce(&kafka.Message{
+	//	TopicPartition: kafka.TopicPartition{Topic: &commentTopic, Partition: kafka.PartitionAny},
+	//	Value:          marshal,
+	//}, nil)
+	//if err != nil {
+	//	receiver.log.Error(err)
+	//}
+	//receiver.data.Kafka.Producer.Flush(1000)
 	return comment.Id, nil
 }
 
