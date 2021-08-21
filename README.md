@@ -53,3 +53,42 @@ Postgre、kafka、ELK和镜像仓库使用阿里云提供的服务。本地搭�
 ### 服务架构
 
 ![avatar](doc/service.jpg)
+
+## 本地配置
+
+安装以下工具：
+
+* minikube
+* helm
+* make
+* Prometheus
+* Loki
+* Grafana
+
+## 部署服务
+
+执行以下命令
+
+* user
+
+```shell
+helm install user hack/chart/user
+```
+
+* interface
+
+```shell
+helm install interface hack/chart/interface
+```
+
+* food
+
+```shell
+helm install interface hack/chart/food
+```
+
+* comment
+
+```shell
+helm install interface hack/chart/comment
+```
