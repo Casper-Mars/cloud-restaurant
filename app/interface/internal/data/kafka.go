@@ -2,7 +2,7 @@ package data
 
 import (
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/conf"
-	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
 type KafkaData struct {

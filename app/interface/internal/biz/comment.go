@@ -7,9 +7,9 @@ import (
 	foodv1 "github.com/Casper-Mars/cloud-restaurant/api/food/v1"
 	userv1 "github.com/Casper-Mars/cloud-restaurant/api/user/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/data"
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/go-kratos/kratos/v2/log"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 	"sync"
 )
 
