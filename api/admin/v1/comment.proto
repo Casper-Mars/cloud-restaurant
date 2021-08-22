@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+option go_package = "github.com/Casper-Mars/cloud-restaurant/api/admin/v1;v1";
+
+
+service Comment {
+    rpc Query(CommentQueryReq) returns (CommentQueryResp) {
+        option (google.api.http) = {
+            post: "/query"
+            body: "*"
+        };
+    }
+}
+
+message CommentQueryReq {
+    google.protobuf.StringValue user_name = 1;
+    google.protobuf.StringValue food_name = 2;
+    google.protobuf.StringValue comment = 4;
+    google.protobuf.UInt32Value index = 5;
+    google.protobuf.UInt32Value size = 6;
+}
+
+message CommentItem {
+    uint64 user_id = 1;
+    string user_name = 2;
+    uint64 food_id = 3;
+    string food_name = 4;
+    string comment = 5;
+}
+
+message CommentQueryResp {
+    uint32 total = 1;
+    uint32 pages = 2;
+    repeated CommentItem items = 3;
+}
+
+
+
+
