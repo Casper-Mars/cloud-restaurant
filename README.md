@@ -98,3 +98,11 @@ helm install interface hack/chart/comment
 ```shell
 helm install interface hack/chart/admin
 ```
+
+## 业务流程
+
+* 添加用户和菜品
+* 添加评论
+
+> 接口在`api/interface`
+
