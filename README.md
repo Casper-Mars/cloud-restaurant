@@ -92,3 +92,9 @@ helm install interface hack/chart/food
 ```shell
 helm install interface hack/chart/comment
 ```
+
+* admin
+
+```shell
+helm install interface hack/chart/admin
+```
