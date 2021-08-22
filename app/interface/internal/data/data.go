@@ -1,13 +1,17 @@
 package data
 
 import (
+	"fmt"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/conf"
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
+	"net/http"
+	"time"
 )
 
 var ProviderSet = wire.NewSet(NewData, NewEsClient)
+
 //NewKafkaData,
 
 type Data struct {
@@ -42,10 +46,18 @@ func NewEsClient(c *conf.Data) *elasticsearch.Client {
 		Addresses: []string{c.Elasticsearch.Url},
 		Username:  c.Elasticsearch.Username,
 		Password:  c.Elasticsearch.Password,
+		Transport: &http.Transport{
+			ResponseHeaderTimeout: time.Second * 10,
+		},
 	}
 	client, err := elasticsearch.NewClient(config)
 	if err != nil {
 		panic(err)
 	}
+	info, err := client.Info()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(info)
 	return client
 }

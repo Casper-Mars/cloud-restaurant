@@ -1,10 +1,13 @@
 package data
 
 import (
+	"context"
 	"fmt"
 	"github.com/elastic/go-elasticsearch/v7"
+	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 )
@@ -26,6 +29,19 @@ func TestEs(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
+
+	request := esapi.IndexRequest{
+		Index:      "comment",
+		DocumentID: "2",
+		Timeout:    time.Second,
+		Body:       strings.NewReader("{\n          \"FoodId\" : 1,\n          \"FoodName\" : \"宫保鸡丁\",\n          \"UserId\" : 1,\n          \"UserName\" : \"小明\",\n          \"Comment\" : \"great\"\n        }"),
+		Refresh:    "true",
+	}
+	do, err := request.Do(context.Background(), client)
+	if err != nil {
+		panic(err)
+	}
+	defer do.Body.Close()
 
 	fmt.Println(info)
 

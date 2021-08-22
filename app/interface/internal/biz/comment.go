@@ -2,23 +2,29 @@ package biz
 
 import (
 	"context"
+	"encoding/json"
 	commentv1 "github.com/Casper-Mars/cloud-restaurant/api/comment/v1"
 	foodv1 "github.com/Casper-Mars/cloud-restaurant/api/food/v1"
 	userv1 "github.com/Casper-Mars/cloud-restaurant/api/user/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/data"
+	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"github.com/go-kratos/kratos/v2/log"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"strconv"
+	"strings"
 	"sync"
+	"time"
 )
 
 var commentTopic = "comment"
 
 type CommentDO struct {
-	UserId   uint64
-	UserName string
-	FoodId   uint64
-	FoodName string
-	Comment  string
+	Id       uint64 `json:"Id"`
+	UserId   uint64 `json:"UserId"`
+	UserName string `json:"UserName"`
+	FoodId   uint64 `json:"FoodId"`
+	FoodName string `json:"FoodName"`
+	Comment  string `json:"Comment"`
 }
 
 type CommentUsecase struct {
@@ -49,6 +55,41 @@ func (receiver CommentUsecase) AddComment(ctx context.Context, do CommentDO) (ui
 	if err != nil {
 		return 0, err
 	}
+
+	commentDO := CommentDO{
+		UserId:  do.UserId,
+		FoodId:  do.FoodId,
+		Comment: do.Comment,
+	}
+
+	users, err1 := receiver.uc.ListUserByIds(ctx, &userv1.ListUserByIdReq{Id: []uint64{do.UserId}})
+	foods, err2 := receiver.fc.ListByIds(ctx, &foodv1.ListFoodByIdReq{Id: []uint64{do.FoodId}})
+
+	if err1 == nil && err2 == nil {
+		commentDO.UserName = users.Items[0].Name
+		commentDO.FoodName = foods.Items[0].Name
+		marshal, err := json.Marshal(commentDO)
+		if err != nil {
+			receiver.log.Errorf("Json error:%s", err)
+		} else {
+			request := esapi.IndexRequest{
+				Index:      commentTopic,
+				DocumentID: strconv.Itoa(int(comment.Id)),
+				Refresh:    "true",
+				Body:       strings.NewReader(string(marshal)),
+				Timeout:    time.Second,
+			}
+			response, err := request.Do(context.Background(), receiver.data.Es)
+			if err != nil {
+				receiver.log.Error(err)
+			} else {
+				defer response.Body.Close()
+			}
+		}
+	} else {
+		receiver.log.Errorf("Can not get user or food:\n%s\n%s", err1, err2)
+	}
+
 	//marshal, err := json.Marshal(comment)
 	//if err != nil {
 	//	return 0, err
