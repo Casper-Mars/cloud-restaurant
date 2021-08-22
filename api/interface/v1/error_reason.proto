@@ -10,5 +10,5 @@ enum ErrorReason {
     option(errors.default_code) = 500;
 
     GEN_ERROR = 0 [(errors.code) = 500];
-
+    PARAM_MISS = 1 [(errors.code) = 504];
 }

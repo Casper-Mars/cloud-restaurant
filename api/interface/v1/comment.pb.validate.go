@@ -41,35 +41,11 @@ func (m *CommentAddReq) Validate() error {
 		return nil
 	}
 
-	if v, ok := interface{}(m.GetUserId()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CommentAddReqValidationError{
-				field:  "UserId",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
+	// no validation rules for UserId
 
-	if v, ok := interface{}(m.GetFoodId()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CommentAddReqValidationError{
-				field:  "FoodId",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
+	// no validation rules for FoodId
 
-	if v, ok := interface{}(m.GetComment()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CommentAddReqValidationError{
-				field:  "Comment",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
+	// no validation rules for Comment
 
 	return nil
 }

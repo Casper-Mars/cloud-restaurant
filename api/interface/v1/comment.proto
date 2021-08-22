@@ -4,7 +4,6 @@ package interface.v1;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-import "google/protobuf/wrappers.proto";
 
 option go_package = "github.com/Casper-Mars/cloud-restaurant/api/interface/v1;v1";
 
@@ -27,9 +26,9 @@ service Comment {
 }
 
 message CommentAddReq {
-    google.protobuf.UInt64Value user_id = 1;
-    google.protobuf.UInt64Value food_id = 2;
-    google.protobuf.StringValue comment = 3;
+    uint64 user_id = 1;
+    uint64 food_id = 2;
+    string comment = 3;
 }
 
 

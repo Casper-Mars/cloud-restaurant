@@ -19,3 +19,12 @@ func IsGenError(err error) bool {
 func ErrorGenError(format string, args ...interface{}) *errors.Error {
 	return errors.New(500, ErrorReason_GEN_ERROR.String(), fmt.Sprintf(format, args...))
 }
+
+func IsParamMiss(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_PARAM_MISS.String() && e.Code == 504
+}
+
+func ErrorParamMiss(format string, args ...interface{}) *errors.Error {
+	return errors.New(504, ErrorReason_PARAM_MISS.String(), fmt.Sprintf(format, args...))
+}

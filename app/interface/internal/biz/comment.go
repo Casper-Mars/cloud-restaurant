@@ -3,10 +3,12 @@ package biz
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	commentv1 "github.com/Casper-Mars/cloud-restaurant/api/comment/v1"
 	foodv1 "github.com/Casper-Mars/cloud-restaurant/api/food/v1"
 	userv1 "github.com/Casper-Mars/cloud-restaurant/api/user/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/data"
+	"github.com/Casper-Mars/cloud-restaurant/pkg/status"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"github.com/go-kratos/kratos/v2/log"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -105,12 +107,14 @@ func (receiver CommentUsecase) AddComment(ctx context.Context, do CommentDO) (ui
 	return comment.Id, nil
 }
 
-func (receiver CommentUsecase) ListComment(ctx context.Context) []*CommentDO {
+func (receiver CommentUsecase) ListComment(ctx context.Context) ([]*CommentDO, error) {
 	/*search for the comment*/
 	comments, err := receiver.cc.ListComment(ctx, &emptypb.Empty{})
 	if err != nil {
-		receiver.log.Error(err)
-		return nil
+		if errors.As(err, &status.ErrQueryEmpty) {
+			return make([]*CommentDO, 0), nil
+		}
+		return nil, err
 	}
 	result := make([]*CommentDO, len(comments.Items))
 	userIds := make([]uint64, len(comments.Items))
@@ -163,5 +167,5 @@ func (receiver CommentUsecase) ListComment(ctx context.Context) []*CommentDO {
 			k.FoodName = foodMap[k.FoodId]
 		}
 	}
-	return result
+	return result, nil
 }
