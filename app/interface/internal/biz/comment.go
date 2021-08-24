@@ -11,10 +11,10 @@ import (
 	"github.com/Casper-Mars/cloud-restaurant/pkg/status"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"github.com/go-kratos/kratos/v2/log"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -131,9 +131,9 @@ func (receiver CommentUsecase) ListComment(ctx context.Context) ([]*CommentDO, e
 	userMap := make(map[uint64]string, len(userIds))
 	foodMap := make(map[uint64]string, len(userIds))
 	/*search the user and food info*/
-	group := sync.WaitGroup{}
-	group.Add(2)
-	go func() {
+	timeout, _ := context.WithTimeout(context.Background(), time.Second*5)
+	group, _ := errgroup.WithContext(timeout)
+	group.Go(func() error {
 		users, err2 := receiver.uc.ListUserByIds(ctx, &userv1.ListUserByIdReq{
 			Id: userIds,
 		})
@@ -143,9 +143,9 @@ func (receiver CommentUsecase) ListComment(ctx context.Context) ([]*CommentDO, e
 				userMap[u.Id] = u.Name
 			}
 		}
-		defer group.Done()
-	}()
-	go func() {
+		return nil
+	})
+	group.Go(func() error {
 		foods, err2 := receiver.fc.ListByIds(ctx, &foodv1.ListFoodByIdReq{
 			Id: foodIds,
 		})
@@ -155,8 +155,8 @@ func (receiver CommentUsecase) ListComment(ctx context.Context) ([]*CommentDO, e
 				foodMap[f.Id] = f.Name
 			}
 		}
-		defer group.Done()
-	}()
+		return nil
+	})
 	group.Wait()
 	/*fill the user and food info */
 	for _, k := range result {
