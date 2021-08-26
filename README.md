@@ -50,7 +50,7 @@
 
 Postgre、kafka、ELK和镜像仓库使用阿里云提供的服务。本地搭建k8s，业务服务、Prometheus和Loki使用搭建的k8s。
 
-### 服务架构
+### 本地k8s架构
 
 ![avatar](doc/service.jpg)
 
