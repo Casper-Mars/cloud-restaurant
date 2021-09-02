@@ -7,6 +7,7 @@ require (
 	github.com/confluentinc/confluent-kafka-go v1.7.0
 	github.com/elastic/go-elasticsearch/v7 v7.14.0
 	github.com/go-kratos/kratos/v2 v2.0.4
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/google/wire v0.5.0
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.10.2
