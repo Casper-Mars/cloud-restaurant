@@ -98,7 +98,7 @@ func main() {
 	if err := setTracerProvider(bc.Tracing.Endpoint); err != nil {
 		panic(err)
 	}
-	app, cleanup, err := initApp(bc.Server, bc.Data, logger)
+	app, cleanup, err := initApp(bc.Server, bc.Data, bc.Auth, logger)
 	if err != nil {
 		panic(err)
 	}

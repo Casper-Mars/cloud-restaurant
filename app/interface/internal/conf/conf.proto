@@ -10,6 +10,7 @@ message Bootstrap {
     Server server = 1;
     Data data = 2;
     Tracing tracing = 3;
+    Auth auth = 4;
 }
 
 message Server {
@@ -59,4 +60,8 @@ message Data {
 
 message Tracing {
     string endpoint = 1;
+}
+
+message Auth {
+    string access_secret = 1;
 }

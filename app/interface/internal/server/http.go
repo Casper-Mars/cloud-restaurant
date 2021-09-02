@@ -4,6 +4,7 @@ import (
 	v1 "github.com/Casper-Mars/cloud-restaurant/api/interface/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/conf"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/service"
+	"github.com/Casper-Mars/cloud-restaurant/pkg/jwt"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
@@ -14,7 +15,7 @@ import (
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, logger log.Logger,
+func NewHTTPServer(c *conf.Server, ac *conf.Auth, logger log.Logger,
 	auth *service.AuthService,
 	health *service.HealthService,
 	user *service.UserService,
@@ -28,6 +29,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger,
 			logging.Server(logger),
 			metrics.Server(),
 			validate.Validator(),
+			jwt.Server(ac.AccessSecret),
 		),
 	}
 	if c.Http.Network != "" {

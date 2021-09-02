@@ -4,6 +4,7 @@ import (
 	v1 "github.com/Casper-Mars/cloud-restaurant/api/user/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/conf"
 	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/service"
+	"github.com/Casper-Mars/cloud-restaurant/pkg/jwt"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
@@ -14,7 +15,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, logger log.Logger, user *service.UserService) *grpc.Server {
+func NewGRPCServer(c *conf.Server, ac *conf.Auth, logger log.Logger, user *service.UserService) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -22,6 +23,7 @@ func NewGRPCServer(c *conf.Server, logger log.Logger, user *service.UserService)
 			logging.Server(logger),
 			metrics.Server(),
 			validate.Validator(),
+			jwt.Server(ac.AccessSecret),
 		),
 	}
 	if c.Grpc.Network != "" {
