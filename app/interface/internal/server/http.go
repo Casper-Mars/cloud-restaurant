@@ -4,14 +4,18 @@ import (
 	v1 "github.com/Casper-Mars/cloud-restaurant/api/interface/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/conf"
 	"github.com/Casper-Mars/cloud-restaurant/app/interface/internal/service"
-	"github.com/Casper-Mars/cloud-restaurant/pkg/jwt"
+	authpkg "github.com/Casper-Mars/cloud-restaurant/pkg/middleware/auth"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
+	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	jwt2 "github.com/golang-jwt/jwt/v4"
+	"regexp"
 )
 
 // NewHTTPServer new a HTTP server.
@@ -22,6 +26,10 @@ func NewHTTPServer(c *conf.Server, ac *conf.Auth, logger log.Logger,
 	food *service.FoodService,
 	comment *service.CommentService,
 ) *http.Server {
+
+	keyFunc := func(token *jwt2.Token) (interface{}, error) {
+		return []byte(ac.AccessSecret), nil
+	}
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -29,7 +37,19 @@ func NewHTTPServer(c *conf.Server, ac *conf.Auth, logger log.Logger,
 			logging.Server(logger),
 			metrics.Server(),
 			validate.Validator(),
-			jwt.Server(ac.AccessSecret),
+			selector.Server(
+				jwt.Server(keyFunc),
+				authpkg.Server(),
+			).
+				Match(func(operation string) bool {
+					// 白名单
+					r, err := regexp.Compile("/interface.v1.Auth/.*")
+					if err != nil {
+						return false
+					}
+					return r.FindString(operation) != operation
+				}).
+				Build(),
 		),
 	}
 	if c.Http.Network != "" {

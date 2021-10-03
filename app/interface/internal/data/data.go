@@ -19,7 +19,8 @@ type Data struct {
 	//Kafka *KafkaData
 }
 
-func NewData(logger log.Logger, esc *elasticsearch.Client,
+func NewData(logger log.Logger,
+	//esc *elasticsearch.Client,
 
 //kafkaData *KafkaData,
 ) (*Data, func(), error) {
@@ -36,7 +37,7 @@ func NewData(logger log.Logger, esc *elasticsearch.Client,
 		//}
 	}
 	return &Data{
-		Es: esc,
+		//Es: esc,
 		//Kafka: kafkaData,
 	}, cleanup, nil
 }

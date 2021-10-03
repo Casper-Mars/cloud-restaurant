@@ -4,14 +4,15 @@ import (
 	v1 "github.com/Casper-Mars/cloud-restaurant/api/user/v1"
 	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/conf"
 	"github.com/Casper-Mars/cloud-restaurant/app/user/internal/service"
-	"github.com/Casper-Mars/cloud-restaurant/pkg/jwt"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+	jwt2 "github.com/golang-jwt/jwt/v4"
 )
 
 // NewGRPCServer new a gRPC server.
@@ -23,7 +24,9 @@ func NewGRPCServer(c *conf.Server, ac *conf.Auth, logger log.Logger, user *servi
 			logging.Server(logger),
 			metrics.Server(),
 			validate.Validator(),
-			jwt.Server(ac.AccessSecret),
+			jwt.Server(func(token *jwt2.Token) (interface{}, error) {
+				return []byte(ac.AccessSecret), nil
+			}),
 		),
 	}
 	if c.Grpc.Network != "" {

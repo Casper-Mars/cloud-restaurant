@@ -30,16 +30,14 @@ func initApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, logg
 	foodUsecase := biz.NewFoodUsecase(logger, foodClient)
 	foodService := service.NewFoodService(logger, foodUsecase)
 	commentClient := biz.NewCommentClient()
-	client := data.NewEsClient(confData)
-	dataData, cleanup, err := data.NewData(logger, client)
+	dataData, cleanup, err := data.NewData(logger)
 	if err != nil {
 		return nil, nil, err
 	}
 	commentUsecase := biz.NewCommentUsecase(logger, userClient, foodClient, commentClient, dataData)
 	commentService := service.NewCommentService(commentUsecase, logger)
 	httpServer := server.NewHTTPServer(confServer, auth, logger, authService, healthService, userService, foodService, commentService)
-	grpcServer := server.NewGRPCServer(confServer, auth, authService, userService, logger)
-	app := newApp(logger, httpServer, grpcServer)
+	app := newApp(logger, httpServer)
 	return app, func() {
 		cleanup()
 	}, nil
