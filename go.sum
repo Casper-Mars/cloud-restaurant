@@ -66,8 +66,8 @@ github.com/go-bindata/go-bindata v1.0.1-0.20190711162640-ee3c2418e368/go.mod h1:
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-kit/kit v0.8.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
 github.com/go-kratos/aegis v0.1.1/go.mod h1:jYeSQ3Gesba478zEnujOiG5QdsyF3Xk/8owFUeKcHxw=
-github.com/go-kratos/kratos/v2 v2.0.6-0.20210930063125-0597883e701b h1:SxZru9ETYMSU4sQI9DVOUpA07y38yMt0mjzbGGlwLIk=
-github.com/go-kratos/kratos/v2 v2.0.6-0.20210930063125-0597883e701b/go.mod h1:9CCt6A+by+9/L6aL8veLgPEpEiZfpzMzwbw1ahlC6xY=
+github.com/go-kratos/kratos/v2 v2.1.0 h1:mVA98n5zyAvOORts3NOFRMP5VMNB1Hff8kVTybgawgw=
+github.com/go-kratos/kratos/v2 v2.1.0/go.mod h1:aJv7++0gDtfncp+2e3Ae32ElyFd77WS+pdXCRTSFll0=
 github.com/go-logfmt/logfmt v0.3.0/go.mod h1:Qt1PoO58o5twSAckw1HlFXLmHsOX5/0LbT9GBnD5lWE=
 github.com/go-logfmt/logfmt v0.4.0/go.mod h1:3RMwSq7FuexP4Kalkev3ejPJsZTpXXBr9+V4qmtdjCk=
 github.com/go-ole/go-ole v1.2.5/go.mod h1:pprOEPIfldk/42T2oK7lQ4v4JSDwmV0As9GaiUsvbm0=

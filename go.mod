@@ -6,7 +6,7 @@ require (
 	entgo.io/ent v0.9.0
 	github.com/confluentinc/confluent-kafka-go v1.7.0 // indirect
 	github.com/elastic/go-elasticsearch/v7 v7.14.0
-	github.com/go-kratos/kratos/v2 v2.0.6-0.20210930063125-0597883e701b
+	github.com/go-kratos/kratos/v2 v2.1.0
 	github.com/golang-jwt/jwt/v4 v4.0.0
 	github.com/google/wire v0.5.0
 	github.com/kr/text v0.2.0 // indirect
